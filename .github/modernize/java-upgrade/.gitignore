@@ -1,0 +1,53 @@
+# =========================
+# FRONTEND
+# =========================
+
+# Node.js dependencies
+frontend/node_modules/
+
+# Vite production build
+frontend/dist/
+
+
+# =========================
+# ENVIRONMENT FILES
+# =========================
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+
+# =========================
+# BACKEND
+# =========================
+
+# Maven build output
+backend/target/
+
+
+# =========================
+# IDE
+# =========================
+
+# VS Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+
+
+# =========================
+# LOG FILES
+# =========================
+
+*.log
+
+
+# =========================
+# OPERATING SYSTEM
+# =========================
+
+.DS_Store
+Thumbs.db

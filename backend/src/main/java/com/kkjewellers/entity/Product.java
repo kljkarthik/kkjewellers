@@ -1,0 +1,118 @@
+package com.kkjewellers.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String productCode; // SKU, e.g., KK-NK-001
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "collection_id")
+    private CollectionEntity collection;
+
+    private String material; // Gold, Diamond, Silver
+    private String purity;   // 22K, 18K, 14K, 925
+    private String weight;   // e.g. "45.5 gms"
+    private String gender;   // Women, Men, Kids
+    private String occasion; // Wedding, Engagement, Festival, Party, Daily Wear
+
+    @Column(length = 500)
+    private String shortDescription;
+
+    @Column(length = 3000)
+    private String fullDescription;
+
+    private Boolean featured;
+    private Boolean newArrival;
+    private Boolean active;
+
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ProductImage> images = new ArrayList<>();
+
+    public Product() {
+        this.featured = false;
+        this.newArrival = false;
+        this.active = true;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public void addImage(ProductImage image) {
+        images.add(image);
+        image.setProduct(this);
+    }
+
+    public void removeImage(ProductImage image) {
+        images.remove(image);
+        image.setProduct(null);
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getProductCode() { return productCode; }
+    public void setProductCode(String productCode) { this.productCode = productCode; }
+
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
+
+    public CollectionEntity getCollection() { return collection; }
+    public void setCollection(CollectionEntity collection) { this.collection = collection; }
+
+    public String getMaterial() { return material; }
+    public void setMaterial(String material) { this.material = material; }
+
+    public String getPurity() { return purity; }
+    public void setPurity(String purity) { this.purity = purity; }
+
+    public String getWeight() { return weight; }
+    public void setWeight(String weight) { this.weight = weight; }
+
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+
+    public String getOccasion() { return occasion; }
+    public void setOccasion(String occasion) { this.occasion = occasion; }
+
+    public String getShortDescription() { return shortDescription; }
+    public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
+
+    public String getFullDescription() { return fullDescription; }
+    public void setFullDescription(String fullDescription) { this.fullDescription = fullDescription; }
+
+    public Boolean getFeatured() { return featured; }
+    public void setFeatured(Boolean featured) { this.featured = featured; }
+
+    public Boolean getNewArrival() { return newArrival; }
+    public void setNewArrival(Boolean newArrival) { this.newArrival = newArrival; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public List<ProductImage> getImages() { return images; }
+    public void setImages(List<ProductImage> images) { this.images = images; }
+}

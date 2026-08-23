@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-obsidian-900 text-pearl-100 font-sans min-h-screen overflow-x-hidden antialiased selection:bg-gold-500 selection:text-obsidian-950;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-wider uppercase;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #050605;
+}
+::-webkit-scrollbar-thumb {
+  background: #BFA76A;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D9C68F;
+}
+
+/* Ken Burns Slow Zoom Effect */
+@keyframes kenBurns {
+  0% { transform: scale(1.0); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1.06); }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 18s ease-in-out infinite alternate;
+}
+
+/* Gold Shimmer Text Animation */
+@keyframes goldShimmerText {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(90deg, #BFA76A 0%, #FAF5E8 50%, #BFA76A 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShimmerText 6s ease-in-out infinite;
+}
+
+/* Gold Line Expansion Animation */
+@keyframes expandLine {
+  from { width: 0; }
+  to { width: 120px; }
+}
+
+.animate-expand-line {
+  animation: expandLine 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Subtle Floating Gold Particles */
+.gold-particle-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.gold-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(217, 198, 143, 0.4);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(191, 167, 106, 0.6);
+  animation: floatParticle 12s infinite ease-in-out;
+}
+
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  50% { opacity: 0.7; transform: translateY(-40px) translateX(20px); }
+}
+
+/* Custom Desktop Cursor */
+@media (min-width: 1024px) {
+  .custom-cursor-active button,
+  .custom-cursor-active a,
+  .custom-cursor-active [role="button"] {
+    cursor: none;
+  }
+}
+
+.thin-gold-border {
+  border: 1px solid rgba(191, 167, 106, 0.3);
+}
+
+.thin-gold-border:hover {
+  border-color: rgba(217, 198, 143, 0.8);
+}
+
+/* Glassmorphism & Gold Glow Effects */
+.glass-gold-card {
+  background: rgba(8, 9, 8, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(191, 167, 106, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(217, 198, 143, 0.2);
+}
+
+.gold-glow-hover {
+  transition: all 0.4s ease;
+}
+
+.gold-glow-hover:hover {
+  border-color: rgba(191, 167, 106, 0.9);
+  box-shadow: 0 0 25px rgba(191, 167, 106, 0.3);
+}
+
+/* Product Image Magnifier Lens Styling */
+.magnifier-container {
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.magnifier-lens {
+  position: absolute;
+  pointer-events: none;
+  border: 2px solid rgba(191, 167, 106, 0.9);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(191, 167, 106, 0.4);
+  border-radius: 50%;
+  z-index: 30;
+  background-repeat: no-repeat;
+}
+
