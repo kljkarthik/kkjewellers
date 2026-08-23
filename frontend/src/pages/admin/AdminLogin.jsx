@@ -4,8 +4,8 @@ import { Lock, User, Key, ShieldAlert, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminLogin = () => {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,13 @@ const AdminLogin = () => {
       await login(username, password);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials. Access restricted.');
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        setError('Backend server on Render is spinning up (free tier cold start). Please wait 30 seconds and click Sign In again.');
+      } else if (err.response?.status === 404 || err.response?.data === 'Not Found') {
+        setError('Backend API unreachable or URL incorrect. Please check VITE_API_URL or wait for Render backend to finish waking up.');
+      } else {
+        setError(err.response?.data?.error || 'Invalid admin credentials. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
