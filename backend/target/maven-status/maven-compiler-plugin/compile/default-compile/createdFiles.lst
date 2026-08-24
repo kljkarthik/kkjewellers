@@ -4,8 +4,10 @@ com\kkjewellers\entity\CollectionEntity.class
 com\kkjewellers\dto\AuthDTOs$RegisterRequest.class
 com\kkjewellers\entity\Product.class
 com\kkjewellers\dto\CustomerDTOs.class
+com\kkjewellers\dto\AuthDTOs$ChangeProfileRequest.class
 com\kkjewellers\repository\AppointmentRepository.class
 com\kkjewellers\repository\CategoryRepository.class
+com\kkjewellers\dto\AuthDTOs$ResetPasswordRequest.class
 com\kkjewellers\controller\AdminCustomerController.class
 com\kkjewellers\dto\AuthDTOs$LoginRequest.class
 com\kkjewellers\dto\CustomerDTOs$CustomerAuthResponse.class

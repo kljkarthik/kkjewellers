@@ -46,11 +46,14 @@ public class PublicCatalogueController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/products/featured")
+    public ResponseEntity<List<Product>> getFeaturedProducts() {
+        return ResponseEntity.ok(productRepository.findByFeaturedTrueAndActiveTrue());
+    }
+
+    @GetMapping("/products/new-arrivals")
+    public ResponseEntity<List<Product>> getNewArrivals() {
+        return ResponseEntity.ok(productRepository.findByNewArrivalTrueAndActiveTrue());
     }
 
     @GetMapping("/products/code/{code}")
@@ -60,14 +63,11 @@ public class PublicCatalogueController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/products/featured")
-    public ResponseEntity<List<Product>> getFeaturedProducts() {
-        return ResponseEntity.ok(productRepository.findByFeaturedTrueAndActiveTrue());
-    }
-
-    @GetMapping("/products/new-arrivals")
-    public ResponseEntity<List<Product>> getNewArrivals() {
-        return ResponseEntity.ok(productRepository.findByNewArrivalTrueAndActiveTrue());
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        return productRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/categories")

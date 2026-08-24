@@ -49,4 +49,42 @@ public class AuthDTOs {
         public String getFullName() { return fullName; }
         public String getRole() { return role; }
     }
+
+    public static class ChangeProfileRequest {
+        private String currentPassword;
+        private String newUsername;
+        private String newPassword;
+        private String fullName;
+        private String email;
+
+        public String getCurrentPassword() { return currentPassword; }
+        public void setCurrentPassword(String currentPassword) { this.currentPassword = currentPassword; }
+
+        public String getNewUsername() { return newUsername; }
+        public void setNewUsername(String newUsername) { this.newUsername = newUsername; }
+
+        public String getNewPassword() { return newPassword; }
+        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+    }
+
+    public static class ResetPasswordRequest {
+        private String username;
+        private String newUsername;
+        private String newPassword;
+
+        public String getUsername() { return username; }
+        public void setUsername(String username) { this.username = username; }
+
+        public String getNewUsername() { return newUsername; }
+        public void setNewUsername(String newUsername) { this.newUsername = newUsername; }
+
+        public String getNewPassword() { return newPassword; }
+        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+    }
 }

@@ -81,4 +81,102 @@ public class AdminAuthController {
         }
         return ResponseEntity.status(401).build();
     }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody ChangeProfileRequest request) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication() != null 
+                ? SecurityContextHolder.getContext().getAuthentication().getName() 
+                : null;
+
+        AdminUser admin = null;
+        if (currentUsername != null && !currentUsername.equals("anonymousUser")) {
+            admin = adminUserRepository.findByUsername(currentUsername).orElse(null);
+        }
+
+        if (admin == null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AdminUser u) {
+            admin = u;
+        }
+
+        if (admin == null) {
+            admin = adminUserRepository.findAll().stream().findFirst().orElse(null);
+        }
+
+        if (admin == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized access. Admin user not found."));
+        }
+
+        // Require current password for any security updates
+        if (request.getCurrentPassword() == null || request.getCurrentPassword().isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Current password is required to save security changes."));
+        }
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), admin.getPassword())) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Incorrect current password. Verification failed."));
+        }
+
+        // Update Username if changed
+        if (request.getNewUsername() != null && !request.getNewUsername().isBlank()) {
+            String newUsername = request.getNewUsername().trim();
+            if (!newUsername.equals(admin.getUsername())) {
+                if (adminUserRepository.findByUsername(newUsername).isPresent()) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Username '" + newUsername + "' is already taken."));
+                }
+                admin.setUsername(newUsername);
+            }
+        }
+
+        // Update Password if provided
+        if (request.getNewPassword() != null && !request.getNewPassword().isBlank()) {
+            admin.setPassword(passwordEncoder.encode(request.getNewPassword().trim()));
+        }
+
+        // Update Full Name & Email if provided
+        if (request.getFullName() != null && !request.getFullName().isBlank()) {
+            admin.setFullName(request.getFullName().trim());
+        }
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            admin.setEmail(request.getEmail().trim());
+        }
+
+        adminUserRepository.save(admin);
+
+        // Generate fresh token for updated username
+        String newToken = jwtTokenProvider.generateToken(admin.getUsername());
+
+        return ResponseEntity.ok(new AuthResponse(newToken, admin.getUsername(), admin.getFullName(), admin.getRole()));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        String usernameToFind = (request.getUsername() != null && !request.getUsername().isBlank()) 
+                ? request.getUsername().trim() 
+                : "admin";
+
+        AdminUser admin = adminUserRepository.findByUsername(usernameToFind)
+                .orElseGet(() -> adminUserRepository.findAll().stream().findFirst().orElse(null));
+
+        if (admin == null) {
+            // Create default admin user if system has no admin accounts yet
+            admin = new AdminUser();
+            admin.setUsername(usernameToFind);
+            admin.setFullName("Master Admin");
+            admin.setRole("ADMIN");
+        }
+
+        if (request.getNewPassword() == null || request.getNewPassword().isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "New password is required"));
+        }
+
+        // Update password
+        admin.setPassword(passwordEncoder.encode(request.getNewPassword().trim()));
+
+        // Update username if requested
+        if (request.getNewUsername() != null && !request.getNewUsername().isBlank()) {
+            admin.setUsername(request.getNewUsername().trim());
+        }
+
+        adminUserRepository.save(admin);
+
+        return ResponseEntity.ok(Map.of("message", "Admin password updated successfully! You can now log in with your new credentials."));
+    }
 }
