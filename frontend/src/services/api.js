@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-// Get API base URL from env or fallback to Render production backend / local dev server
+// Get API base URL from VITE_API_URL or fallback to production Render backend / local proxy
 const getBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+  if (typeof window !== 'undefined' && (window.location.hostname.includes('vercel.app') || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'))) {
     return 'https://kk-jewellers-backend.onrender.com/api';
   }
   return '/api';
@@ -16,7 +16,7 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000, // 30s timeout for free-tier Render backend spin up
+  timeout: 45000, // 45s timeout to allow free-tier Render backend cold starts to finish
 });
 
 // Interceptor to attach JWT token for authenticated endpoints
