@@ -24,6 +24,7 @@ const AdminDashboardLayout = () => {
     { name: 'Enquiries', path: '/admin/enquiries', icon: MessageSquare },
     { name: 'Gallery', path: '/admin/gallery', icon: Image },
     { name: 'Website Settings', path: '/admin/settings', icon: Settings },
+    { name: 'Change Password', path: '/admin/security', icon: Shield },
   ];
 
   const handleLogout = () => {
@@ -117,10 +118,16 @@ const AdminDashboardLayout = () => {
               <Globe className="w-3.5 h-3.5" /> Public Catalogue &rarr;
             </Link>
 
-            <div className="text-right hidden sm:block border-l border-obsidian-600 pl-4">
-              <p className="text-xs font-bold text-pearl-100">{admin?.fullName || 'Master Admin'}</p>
-              <p className="text-[10px] text-gold-500 font-mono font-semibold uppercase">{admin?.username || 'admin'}</p>
-            </div>
+            <Link
+              to="/admin/security"
+              className="text-right border-l border-obsidian-600 pl-4 hover:opacity-80 transition-opacity group cursor-pointer block"
+              title="Click to Change Username & Password"
+            >
+              <p className="text-xs font-bold text-pearl-100 group-hover:text-gold-400 flex items-center gap-1">
+                {admin?.fullName || 'Master Admin'} <Shield className="w-3 h-3 text-gold-500" />
+              </p>
+              <p className="text-[10px] text-gold-500 font-mono font-semibold uppercase">{admin?.username || localStorage.getItem('kk_admin_username') || 'admin'}</p>
+            </Link>
           </div>
         </header>
 

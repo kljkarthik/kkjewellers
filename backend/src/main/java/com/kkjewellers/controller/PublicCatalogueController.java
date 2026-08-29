@@ -1,11 +1,13 @@
 package com.kkjewellers.controller;
 
+import com.kkjewellers.dto.ProductSummaryDTO;
 import com.kkjewellers.entity.*;
 import com.kkjewellers.repository.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -32,7 +34,7 @@ public class PublicCatalogueController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<List<ProductSummaryDTO>> getProducts(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String collection,
@@ -43,17 +45,26 @@ public class PublicCatalogueController {
         List<Product> products = productRepository.filterProducts(
                 query, category, collection, material, gender, occasion
         );
-        return ResponseEntity.ok(products);
+        List<ProductSummaryDTO> dtos = products.stream()
+                .map(ProductSummaryDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/products/featured")
-    public ResponseEntity<List<Product>> getFeaturedProducts() {
-        return ResponseEntity.ok(productRepository.findByFeaturedTrueAndActiveTrue());
+    public ResponseEntity<List<ProductSummaryDTO>> getFeaturedProducts() {
+        List<ProductSummaryDTO> dtos = productRepository.findByFeaturedTrueAndActiveTrue().stream()
+                .map(ProductSummaryDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/products/new-arrivals")
-    public ResponseEntity<List<Product>> getNewArrivals() {
-        return ResponseEntity.ok(productRepository.findByNewArrivalTrueAndActiveTrue());
+    public ResponseEntity<List<ProductSummaryDTO>> getNewArrivals() {
+        List<ProductSummaryDTO> dtos = productRepository.findByNewArrivalTrueAndActiveTrue().stream()
+                .map(ProductSummaryDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/products/code/{code}")

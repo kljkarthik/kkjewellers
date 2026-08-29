@@ -48,6 +48,7 @@ com\kkjewellers\controller\CustomerAuthController.class
 com\kkjewellers\repository\ProductRepository.class
 com\kkjewellers\KkJewellersApplication.class
 com\kkjewellers\entity\WishlistItem.class
+com\kkjewellers\dto\ProductSummaryDTO.class
 com\kkjewellers\entity\Enquiry.class
 com\kkjewellers\config\SecurityConfig.class
 com\kkjewellers\repository\GalleryItemRepository.class

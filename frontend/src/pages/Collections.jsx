@@ -61,6 +61,16 @@ const Collections = () => {
     }
   };
 
+  // Sync state when URL searchParams change (e.g. navigation from Navbar or Home cards)
+  useEffect(() => {
+    setQuery(searchParams.get('query') || '');
+    setCategory(searchParams.get('category') || '');
+    setCollection(searchParams.get('collection') || '');
+    setMaterial(searchParams.get('material') || '');
+    setGender(searchParams.get('gender') || '');
+    setOccasion(searchParams.get('occasion') || '');
+  }, [searchParams]);
+
   useEffect(() => {
     fetchFilteredProducts();
   }, [query, category, collection, material, gender, occasion]);
@@ -282,8 +292,8 @@ const Collections = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {products.map((product, idx) => (
+                  <ProductCard key={product.id} product={product} priority={idx < 6} />
                 ))}
               </div>
             )}

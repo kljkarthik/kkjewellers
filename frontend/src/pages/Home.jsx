@@ -9,13 +9,14 @@ import WhatsAppFloat from '../components/WhatsAppFloat';
 import LightboxModal from '../components/LightboxModal';
 import EnquiryModal from '../components/EnquiryModal';
 import { getFeaturedProducts, getNewArrivals } from '../services/productService';
-import { getGallery, getWebsiteSettings } from '../services/settingsService';
+import { getGallery } from '../services/settingsService';
+import { useSettings } from '../context/SettingsContext';
 
 const Home = () => {
+  const { settings } = useSettings();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [galleryItems, setGalleryItems] = useState([]);
-  const [settings, setSettings] = useState(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -24,16 +25,14 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [featData, newData, galData, setRes] = await Promise.all([
+        const [featData, newData, galData] = await Promise.all([
           getFeaturedProducts(),
           getNewArrivals(),
-          getGallery('Showroom'),
-          getWebsiteSettings()
+          getGallery('Showroom')
         ]);
         setFeaturedProducts(featData || []);
         setNewArrivals(newData || []);
         setGalleryItems(galData || []);
-        setSettings(setRes || null);
       } catch (err) {
         console.error('Error fetching home data:', err);
       }

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
 
-const ProductCard = ({ product }) => {
-  const primaryImage = product.images?.find(i => i.primaryImage)?.imageUrl || product.images?.[0]?.imageUrl || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+const ProductCard = ({ product, priority = false }) => {
+  const primaryImage = product.primaryImageUrl 
+    || product.images?.find(i => i.primaryImage)?.imageUrl 
+    || product.images?.[0]?.imageUrl 
+    || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+
   const [imgSrc, setImgSrc] = useState(primaryImage);
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  useEffect(() => {
+    setImgSrc(primaryImage);
+    setImgLoaded(false);
+  }, [primaryImage]);
 
   const { isAuthenticated, isWishlisted, toggleWishlist } = useCustomer();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -30,16 +40,29 @@ const ProductCard = ({ product }) => {
       
       {/* Product Image Container */}
       <div className="relative aspect-square overflow-hidden bg-obsidian-950">
+        {/* Skeleton Placeholder while image loads */}
+        {!imgLoaded && (
+          <div className="absolute inset-0 bg-obsidian-800 animate-pulse flex items-center justify-center">
+            <span className="text-[10px] font-mono text-gold-500/50 uppercase tracking-widest">KK JEWELLERS</span>
+          </div>
+        )}
+
         <img
           src={imgSrc}
-          onError={() => setImgSrc('https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80')}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => {
+            setImgSrc('https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80');
+            setImgLoaded(true);
+          }}
           alt={product.name}
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-95 group-hover:brightness-100"
-          loading="lazy"
+          className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ease-out filter brightness-95 group-hover:brightness-100 ${
+            imgLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          loading={priority ? 'eager' : 'lazy'}
         />
         
         {/* Dark Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/90 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/90 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">

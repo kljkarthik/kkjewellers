@@ -6,7 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = {
+    @Index(name = "idx_products_active", columnList = "active"),
+    @Index(name = "idx_products_featured", columnList = "featured"),
+    @Index(name = "idx_products_new_arrival", columnList = "newArrival"),
+    @Index(name = "idx_products_code", columnList = "productCode"),
+    @Index(name = "idx_products_category", columnList = "category_id"),
+    @Index(name = "idx_products_collection", columnList = "collection_id")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

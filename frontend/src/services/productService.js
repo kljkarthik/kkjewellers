@@ -1,4 +1,5 @@
 import API from './api';
+import { fetchWithCache } from './cacheService';
 
 export const getProducts = async (params = {}) => {
   const response = await API.get('/products', { params });
@@ -26,11 +27,15 @@ export const getNewArrivals = async () => {
 };
 
 export const getCategories = async () => {
-  const response = await API.get('/categories');
-  return response.data;
+  return fetchWithCache('categories', async () => {
+    const response = await API.get('/categories');
+    return response.data;
+  }, 10 * 60 * 1000);
 };
 
 export const getCollections = async () => {
-  const response = await API.get('/collections');
-  return response.data;
+  return fetchWithCache('collections', async () => {
+    const response = await API.get('/collections');
+    return response.data;
+  }, 10 * 60 * 1000);
 };

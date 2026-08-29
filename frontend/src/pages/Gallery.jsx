@@ -94,6 +94,7 @@ const Gallery = () => {
                     e.target.src = 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80';
                   }}
                   alt={item.title}
+                  loading={index < 6 ? 'eager' : 'lazy'}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-90 group-hover:brightness-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-obsidian-950/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6 text-left">
