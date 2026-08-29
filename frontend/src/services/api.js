@@ -2,13 +2,22 @@ import axios from 'axios';
 
 // Get API base URL from VITE_API_URL or fallback to production Render backend / local proxy
 const getBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+  let url = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.trim() : '';
+
+  if (!url) {
+    if (typeof window !== 'undefined' && (window.location.hostname.includes('vercel.app') || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'))) {
+      url = 'https://kk-jewellers-backend.onrender.com/api';
+    } else {
+      url = '/api';
+    }
   }
-  if (typeof window !== 'undefined' && (window.location.hostname.includes('vercel.app') || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'))) {
-    return 'https://kk-jewellers-backend.onrender.com/api';
+
+  // Ensure base URL always ends with /api (without trailing slash)
+  if (url.startsWith('http') && !url.endsWith('/api')) {
+    url = url.replace(/\/+$/, '') + '/api';
   }
-  return '/api';
+
+  return url;
 };
 
 const API = axios.create({
