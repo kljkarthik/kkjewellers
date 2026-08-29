@@ -34,12 +34,12 @@ const CustomerWishlist = () => {
 
   return (
     <div className="space-y-6 text-left font-sans">
-      <div className="flex items-center justify-between border-b border-obsidian-600 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-obsidian-600 pb-4">
         <div>
-          <h2 className="font-serif text-2xl font-normal text-gold-400 uppercase tracking-wide flex items-center gap-2">
-            <Heart className="w-6 h-6 text-gold-500 fill-gold-500" /> MY WISHLIST
+          <h2 className="font-serif text-xl sm:text-2xl font-normal text-gold-400 uppercase tracking-wide flex items-center gap-2">
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-gold-500 fill-gold-500" /> MY WISHLIST
           </h2>
-          <p className="text-xs text-pearl-300 font-mono mt-0.5">
+          <p className="text-[11px] sm:text-xs text-pearl-300 font-mono mt-0.5">
             Your saved fine jewellery pieces.
           </p>
         </div>
@@ -54,21 +54,21 @@ const CustomerWishlist = () => {
           <p className="text-xs font-mono">Loading your wishlist...</p>
         </div>
       ) : items.length === 0 ? (
-        <div className="text-center py-16 bg-obsidian-900 border border-obsidian-600 space-y-4">
-          <Heart className="w-12 h-12 text-gold-500/40 mx-auto" />
-          <p className="font-serif text-xl text-gold-400 font-bold uppercase">Your Wishlist is Empty</p>
+        <div className="text-center py-12 sm:py-16 bg-obsidian-900 border border-obsidian-600 space-y-4 px-4">
+          <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-gold-500/40 mx-auto" />
+          <p className="font-serif text-lg sm:text-xl text-gold-400 font-bold uppercase">Your Wishlist is Empty</p>
           <p className="text-xs text-pearl-300 max-w-sm mx-auto">
             Browse our catalogue and click the heart icon on any piece to save it here.
           </p>
           <Link
             to="/collections"
-            className="inline-block px-6 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest shadow-obsidian-glow"
+            className="inline-flex items-center justify-center px-6 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest shadow-obsidian-glow min-h-[44px]"
           >
             EXPLORE CATALOGUE
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {items.map((item) => {
             const product = item.product;
             if (!product) return null;
@@ -77,10 +77,11 @@ const CustomerWishlist = () => {
                 <ProductCard product={product} />
                 <button
                   onClick={() => handleRemove(product.id)}
-                  className="absolute top-3 left-3 z-20 p-2 bg-obsidian-950/80 border border-rose-500/40 text-rose-400 hover:bg-rose-500 hover:text-white transition-colors shadow-md"
+                  className="absolute top-2 left-2 sm:top-3 sm:left-3 z-20 p-2 min-w-[36px] min-h-[36px] flex items-center justify-center bg-obsidian-950/80 border border-rose-500/40 text-rose-400 hover:bg-rose-500 hover:text-white transition-colors shadow-md"
                   title="Remove from Wishlist"
+                  aria-label="Remove from Wishlist"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             );

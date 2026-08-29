@@ -24,35 +24,35 @@ const NewArrivals = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-20">
+    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-16 sm:pt-20">
       <Navbar />
 
-      <section className="bg-obsidian-950 text-pearl-100 py-16 border-b border-gold-500/30 text-center">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <span className="text-xs uppercase tracking-[0.35em] text-gold-500 font-mono font-semibold block mb-2">
+      <section className="bg-obsidian-950 text-pearl-100 py-10 sm:py-16 border-b border-gold-500/30 text-center px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FRESH CREATIONS
           </span>
-          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-gold-400 uppercase tracking-wide">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
             NEW ARRIVALS
           </h1>
-          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-3 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Be the first to discover our latest handcrafted 22K gold and certified solitaire diamond additions.
           </p>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-16 flex-grow w-full">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 flex-grow w-full">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 animate-pulse">
-            {[1, 2, 3, 4].map(n => <div key={n} className="h-80 bg-obsidian-950 border border-obsidian-600"></div>)}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 animate-pulse">
+            {[1, 2, 3, 4].map(n => <div key={n} className="h-64 sm:h-80 bg-obsidian-950 border border-obsidian-600"></div>)}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-16 bg-obsidian-950 border border-gold-500/30">
-            <p className="font-serif text-2xl text-gold-400 font-bold uppercase">No New Arrivals Currently Listed</p>
+          <div className="text-center py-12 sm:py-16 bg-obsidian-950 border border-gold-500/30 px-4">
+            <p className="font-serif text-xl sm:text-2xl text-gold-400 font-bold uppercase">No New Arrivals Currently Listed</p>
             <p className="text-xs text-pearl-300 mt-2">Check back soon for new handcrafted additions!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {products.map((product, idx) => (
               <ProductCard key={product.id} product={product} priority={idx < 4} />
             ))}

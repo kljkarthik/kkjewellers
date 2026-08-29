@@ -31,10 +31,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-20">
+    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-16 sm:pt-20">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center p-6 py-16 relative overflow-hidden text-left">
+      <main className="flex-grow flex items-center justify-center p-4 sm:p-6 py-10 sm:py-16 relative overflow-hidden text-left">
         
         {/* Background Overlay */}
         <div className="absolute inset-0 opacity-15 pointer-events-none">
@@ -47,13 +47,13 @@ const Login = () => {
         </div>
 
         {/* Card */}
-        <div className="w-full max-w-md bg-obsidian-950 border border-gold-500/40 shadow-2xl p-8 sm:p-10 relative z-10 animate-in zoom-in duration-300">
+        <div className="w-full max-w-sm sm:max-w-md bg-obsidian-950 border border-gold-500/40 shadow-2xl p-5 sm:p-10 relative z-10 animate-in zoom-in duration-300">
           
           <div className="text-center space-y-2 mb-6 border-b border-obsidian-600 pb-6">
-            <div className="w-12 h-12 rounded-full border border-gold-500/60 bg-obsidian-900 flex items-center justify-center font-serif text-gold-500 font-bold text-xl mx-auto mb-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gold-500/60 bg-obsidian-900 flex items-center justify-center font-serif text-gold-500 font-bold text-lg sm:text-xl mx-auto mb-3">
               KK
             </div>
-            <h1 className="font-serif text-3xl font-normal text-gold-400 uppercase tracking-wide">
+            <h1 className="font-serif text-2xl sm:text-3xl font-normal text-gold-400 uppercase tracking-wide">
               WELCOME BACK
             </h1>
             <p className="text-xs text-pearl-300 font-mono">
@@ -79,7 +79,7 @@ const Login = () => {
                   placeholder="Email or Mobile"
                   value={identifier}
                   onChange={e => setIdentifier(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400"
+                  className="w-full pl-10 pr-4 py-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                 />
               </div>
             </div>
@@ -87,7 +87,7 @@ const Login = () => {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-[11px] font-mono font-bold text-gold-500 uppercase tracking-wider">Password *</label>
-                <Link to="/forgot-password" className="text-[11px] font-mono text-gold-400 hover:underline">
+                <Link to="/forgot-password" className="text-[11px] font-mono text-gold-400 hover:underline min-h-[36px] flex items-center">
                   Forgot Password?
                 </Link>
               </div>
@@ -99,13 +99,13 @@ const Login = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400"
+                  className="w-full pl-10 pr-4 py-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between text-xs text-pearl-300">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer py-1">
                 <input
                   type="checkbox"
                   checked={rememberMe}
@@ -119,7 +119,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all mt-2"
+              className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all mt-2 min-h-[48px]"
             >
               {loading ? 'Authenticating...' : 'SIGN IN'}
             </button>
@@ -129,12 +129,12 @@ const Login = () => {
           <div className="mt-8 pt-6 border-t border-obsidian-600 text-center text-xs text-pearl-300 font-mono space-y-2">
             <div>
               Don't have an account?{' '}
-              <Link to="/register" className="text-gold-400 font-bold hover:underline uppercase">
+              <Link to="/register" className="text-gold-400 font-bold hover:underline uppercase inline-block py-1">
                 CREATE ACCOUNT
               </Link>
             </div>
             <div>
-              <Link to="/admin/login" className="text-gold-500 hover:text-gold-400 text-[11px] inline-flex items-center gap-1 uppercase">
+              <Link to="/admin/login" className="text-gold-500 hover:text-gold-400 text-[11px] inline-flex items-center gap-1 uppercase py-1">
                 <Lock className="w-3 h-3" /> Admin Staff Login
               </Link>
             </div>

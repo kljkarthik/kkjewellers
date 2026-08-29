@@ -106,21 +106,21 @@ const AdminLogin = () => {
       </div>
 
       {/* Main Container */}
-      <div className="w-full max-w-md bg-obsidian-900 rounded-none shadow-2xl overflow-hidden border border-gold-500/40 relative z-10 animate-in zoom-in duration-300">
+      <div className="w-full max-w-sm sm:max-w-md bg-obsidian-900 rounded-none shadow-2xl overflow-hidden border border-gold-500/40 relative z-10 animate-in zoom-in duration-300">
         
         {/* Header */}
-        <div className="bg-obsidian-950 text-pearl-100 p-8 text-center border-b border-gold-500/30">
-          <div className="w-12 h-12 rounded-full border border-gold-500/60 bg-obsidian-900 flex items-center justify-center font-serif text-gold-500 font-bold text-xl mx-auto mb-3">
+        <div className="bg-obsidian-950 text-pearl-100 p-6 sm:p-8 text-center border-b border-gold-500/30">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gold-500/60 bg-obsidian-900 flex items-center justify-center font-serif text-gold-500 font-bold text-lg sm:text-xl mx-auto mb-3">
             KK
           </div>
-          <h2 className="font-serif text-2xl font-bold text-gold-500 tracking-[0.2em] uppercase">KK JEWELLERS</h2>
-          <p className="text-xs uppercase tracking-[0.25em] text-pearl-300 font-mono mt-1">
+          <h2 className="font-serif text-xl sm:text-2xl font-bold text-gold-500 tracking-[0.2em] uppercase">KK JEWELLERS</h2>
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-pearl-300 font-mono mt-1">
             {isResetMode ? 'RESET ADMIN CREDENTIALS' : 'ADMIN PORTAL'}
           </p>
         </div>
 
         {/* Form Body */}
-        <div className="p-8 font-mono text-xs">
+        <div className="p-5 sm:p-8 font-mono text-xs">
           
           {error && (
             <div className="mb-4 p-3 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs flex items-center gap-2">
@@ -149,7 +149,7 @@ const AdminLogin = () => {
                     placeholder="Enter admin username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ const AdminLogin = () => {
                   <button
                     type="button"
                     onClick={() => { setIsResetMode(true); setError(''); setSuccess(''); }}
-                    className="text-[10px] text-gold-400 hover:text-gold-300 underline uppercase tracking-wider"
+                    className="text-[10px] text-gold-400 hover:text-gold-300 underline uppercase tracking-wider min-h-[36px] flex items-center"
                   >
                     Forgot / Change Password?
                   </button>
@@ -173,7 +173,7 @@ const AdminLogin = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                   />
                 </div>
               </div>
@@ -181,7 +181,7 @@ const AdminLogin = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow transition-all flex items-center justify-center gap-2 mt-2"
+                className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow transition-all flex items-center justify-center gap-2 mt-2 min-h-[48px]"
               >
                 {loading ? 'Authenticating...' : (
                   <>
@@ -203,7 +203,7 @@ const AdminLogin = () => {
                     placeholder="admin"
                     value={resetTargetUsername}
                     onChange={(e) => setResetTargetUsername(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                   />
                 </div>
               </div>
@@ -215,7 +215,7 @@ const AdminLogin = () => {
                   placeholder="Enter new username if changing"
                   value={resetNewUsername}
                   onChange={(e) => setResetNewUsername(e.target.value)}
-                  className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                  className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                 />
               </div>
 
@@ -229,7 +229,7 @@ const AdminLogin = () => {
                     placeholder="Enter new strong password"
                     value={resetNewPassword}
                     onChange={(e) => setResetNewPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                   />
                 </div>
               </div>
@@ -244,7 +244,7 @@ const AdminLogin = () => {
                     placeholder="Re-enter new password"
                     value={resetConfirmPassword}
                     onChange={(e) => setResetConfirmPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ const AdminLogin = () => {
                 <button
                   type="button"
                   onClick={() => { setIsResetMode(false); setError(''); setSuccess(''); }}
-                  className="w-1/3 py-3 bg-obsidian-950 hover:bg-obsidian-800 text-pearl-300 border border-obsidian-700 font-bold uppercase tracking-wider text-xs"
+                  className="w-1/3 py-3 bg-obsidian-950 hover:bg-obsidian-800 text-pearl-300 border border-obsidian-700 font-bold uppercase tracking-wider text-xs min-h-[44px]"
                 >
                   Cancel
                 </button>
@@ -261,7 +261,7 @@ const AdminLogin = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-2/3 py-3 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-wider text-xs shadow-obsidian-glow flex items-center justify-center gap-2"
+                  className="w-2/3 py-3 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-wider text-xs shadow-obsidian-glow flex items-center justify-center gap-2 min-h-[44px]"
                 >
                   {loading ? 'Resetting...' : (
                     <>
@@ -277,7 +277,7 @@ const AdminLogin = () => {
           <div className="mt-8 pt-6 border-t border-obsidian-700 text-center">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-xs font-mono font-bold text-pearl-300 hover:text-gold-400 uppercase tracking-widest transition-colors"
+              className="inline-flex items-center justify-center gap-2 text-xs font-mono font-bold text-pearl-300 hover:text-gold-400 uppercase tracking-widest transition-colors min-h-[44px]"
             >
               <ArrowLeft className="w-4 h-4 text-gold-500" /> Return to Public Website
             </Link>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
 
 const LuxuryHero = () => {
   return (
-    <section className="relative h-screen min-h-[720px] w-full bg-obsidian-950 flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-[640px] sm:min-h-[720px] w-full bg-obsidian-950 flex items-center justify-center overflow-hidden">
       
-      {/* Photographic Background with Ken Burns Animation & Deep Overlay */}
+      {/* Photographic Background with Ken Burns Animation & Deep Vignette Overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1920&q=80"
@@ -27,19 +27,19 @@ const LuxuryHero = () => {
       </div>
 
       {/* Hero Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full pt-20 text-left">
-        <div className="max-w-3xl space-y-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16 sm:pt-20 text-left">
+        <div className="max-w-3xl space-y-4 sm:space-y-6">
           
-          {/* Small Label */}
-          <div className="inline-flex items-center gap-3">
-            <span className="h-px w-10 bg-gold-500"></span>
-            <span className="font-mono text-gold-400 text-xs tracking-[0.35em] font-semibold uppercase">
-              EST. 2017 &bull; KK JEWELLERS
+          {/* Small Eyebrow Label */}
+          <div className="inline-flex items-center gap-2.5 sm:gap-3">
+            <span className="h-px w-8 sm:w-10 bg-gold-500"></span>
+            <span className="font-mono text-gold-400 text-[10px] sm:text-xs tracking-[0.3em] font-semibold uppercase flex items-center gap-1.5">
+              <Sparkles className="w-3 h-3 text-gold-400" /> EST. 2017 &bull; KK JEWELLERS
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal text-pearl-100 uppercase tracking-tight leading-[0.95] font-serif">
+          <h1 className="font-serif text-4xl sm:text-7xl lg:text-8xl font-normal text-pearl-100 uppercase tracking-tight leading-[1.05] sm:leading-[0.95]">
             JEWELS THAT <br />
             <span className="gold-shimmer-text italic font-serif">DEFINE YOUR LEGACY.</span>
           </h1>
@@ -48,15 +48,15 @@ const LuxuryHero = () => {
           <div className="h-0.5 bg-gradient-to-r from-gold-500 via-gold-400 to-transparent animate-expand-line"></div>
 
           {/* Supporting Text */}
-          <p className="font-serif italic text-lg sm:text-2xl text-pearl-200 tracking-wide font-light max-w-xl">
+          <p className="font-serif italic text-base sm:text-2xl text-pearl-200 tracking-wide font-light max-w-xl">
             Timeless craftsmanship. Exceptional jewellery. Created for generations.
           </p>
 
           {/* Button */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center gap-6">
+          <div className="pt-4 sm:pt-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             <Link
               to="/collections"
-              className="w-full sm:w-auto px-9 py-4 bg-gold-500 text-obsidian-950 font-sans font-bold text-xs uppercase tracking-[0.25em] transition-all duration-400 shadow-obsidian-glow flex items-center justify-center gap-2 group"
+              className="w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 bg-gold-500 text-obsidian-950 font-sans font-bold text-xs uppercase tracking-[0.25em] transition-all duration-400 shadow-obsidian-glow flex items-center justify-center gap-2 group gold-sweep-btn min-h-[48px]"
             >
               EXPLORE CATALOGUE <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -65,11 +65,11 @@ const LuxuryHero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-gold-400/80 animate-pulse">
-        <span className="text-[10px] font-mono uppercase tracking-[0.35em] font-semibold text-gold-400">
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-gold-400/80 animate-pulse">
+        <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.35em] font-semibold text-gold-400">
           SCROLL TO DISCOVER
         </span>
-        <div className="w-px h-8 bg-gradient-to-b from-gold-500 to-transparent"></div>
+        <div className="w-px h-6 sm:h-8 bg-gradient-to-b from-gold-500 to-transparent"></div>
         <ChevronDown className="w-4 h-4 text-gold-400" />
       </div>
     </section>

@@ -24,6 +24,18 @@ const Collections = () => {
   const [gender, setGender] = useState(searchParams.get('gender') || '');
   const [occasion, setOccasion] = useState(searchParams.get('occasion') || '');
 
+  // Lock body scroll when filter drawer is open on mobile
+  useEffect(() => {
+    if (filterDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [filterDrawerOpen]);
+
   // Fetch categories & collections on mount
   useEffect(() => {
     const fetchMetadata = async () => {
@@ -61,7 +73,7 @@ const Collections = () => {
     }
   };
 
-  // Sync state when URL searchParams change (e.g. navigation from Navbar or Home cards)
+  // Sync state when URL searchParams change
   useEffect(() => {
     setQuery(searchParams.get('query') || '');
     setCategory(searchParams.get('category') || '');
@@ -86,26 +98,26 @@ const Collections = () => {
   };
 
   return (
-    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-20">
+    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-16 sm:pt-20">
       <Navbar />
 
       {/* Header Banner */}
-      <section className="bg-obsidian-950 text-pearl-100 py-16 border-b border-gold-500/30 text-center">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <span className="text-xs uppercase tracking-[0.35em] text-gold-500 font-mono font-semibold block mb-2">
+      <section className="bg-obsidian-950 text-pearl-100 py-10 sm:py-16 border-b border-gold-500/30 text-center px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FINE JEWELLERY CATALOGUE
           </span>
-          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-gold-400 uppercase tracking-wide">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
             THE COLLECTIONS
           </h1>
-          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-3 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Explore handcrafted 22K gold, certified solitaire diamond ornaments, and royal Indian bridal suites.
           </p>
         </div>
       </section>
 
       {/* Main Filter & Grid Body */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 flex-grow w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-grow w-full">
         
         {/* Top Control Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 pb-6 border-b border-obsidian-600">
@@ -118,14 +130,14 @@ const Collections = () => {
               placeholder="Search by name or SKU (e.g. KK-NK-001)..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium"
+              className="w-full pl-10 pr-4 py-2.5 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 font-medium min-h-[44px]"
             />
           </div>
 
-          <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+          <div className="flex items-center gap-3 sm:gap-4 w-full md:w-auto justify-between md:justify-end">
             <button
               onClick={() => setFilterDrawerOpen(true)}
-              className="md:hidden px-4 py-2.5 bg-obsidian-950 text-gold-400 border border-gold-500/40 text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+              className="md:hidden px-4 py-2.5 bg-obsidian-950 text-gold-400 border border-gold-500/40 text-xs font-bold uppercase tracking-widest flex items-center gap-2 min-h-[44px]"
             >
               <SlidersHorizontal className="w-4 h-4" /> Filters
             </button>
@@ -137,7 +149,7 @@ const Collections = () => {
             {(category || collection || material || gender || occasion || query) && (
               <button
                 onClick={resetFilters}
-                className="text-xs text-gold-500 hover:text-gold-400 font-bold flex items-center gap-1 uppercase tracking-widest"
+                className="text-xs text-gold-500 hover:text-gold-400 font-bold flex items-center gap-1 uppercase tracking-widest min-h-[44px]"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Clear Filters
               </button>
@@ -145,11 +157,11 @@ const Collections = () => {
           </div>
         </div>
 
-        {/* Animated Quick Category Pill Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
+        {/* Animated Quick Category Pill Tabs (Scrollable on mobile) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 sm:mb-8 no-scrollbar scroll-smooth">
           <button
             onClick={() => setCategory('')}
-            className={`px-5 py-2 rounded-full text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 ${
+            className={`px-4 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 min-h-[40px] ${
               category === ''
                 ? 'bg-gold-500 text-obsidian-950 shadow-obsidian-glow scale-105'
                 : 'bg-obsidian-950 text-pearl-200 border border-gold-500/30 hover:border-gold-400 hover:text-gold-400'
@@ -163,7 +175,7 @@ const Collections = () => {
               <button
                 key={catItem.id}
                 onClick={() => setCategory(catItem.slug)}
-                className={`px-4 py-2 rounded-full text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 ${
+                className={`px-4 sm:px-5 py-2 rounded-full text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-1.5 min-h-[40px] ${
                   isSelected
                     ? 'bg-gold-500 text-obsidian-950 shadow-obsidian-glow scale-105'
                     : 'bg-obsidian-950 text-pearl-200 border border-gold-500/30 hover:border-gold-400 hover:text-gold-400'
@@ -175,8 +187,8 @@ const Collections = () => {
           })}
         </div>
 
-        {/* Layout: Sidebar (Desktop) + Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Layout: Sidebar (Desktop) + 2-Column Product Grid (Mobile) */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
           
           {/* Desktop Filter Sidebar */}
           <div className="hidden md:block space-y-6 bg-obsidian-950 p-6 border border-gold-500/30 text-left h-fit">
@@ -224,7 +236,7 @@ const Collections = () => {
               <label className="block text-[11px] font-mono font-bold text-gold-500 uppercase tracking-wider mb-2">Material</label>
               <div className="space-y-1.5 text-xs">
                 {['', 'Gold', 'Diamond', 'Silver'].map((m) => (
-                  <label key={m} className="flex items-center gap-2 cursor-pointer text-pearl-300 hover:text-gold-400">
+                  <label key={m} className="flex items-center gap-2 cursor-pointer text-pearl-300 hover:text-gold-400 py-1">
                     <input
                       type="radio"
                       name="material"
@@ -271,27 +283,27 @@ const Collections = () => {
             </div>
           </div>
 
-          {/* Product Grid Column */}
+          {/* Product Grid Column (2 Columns on Mobile, 3 on Desktop) */}
           <div className="md:col-span-3">
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 animate-pulse">
                 {[1, 2, 3, 4, 5, 6].map((n) => (
-                  <div key={n} className="h-80 bg-obsidian-950 border border-obsidian-600"></div>
+                  <div key={n} className="h-64 sm:h-80 bg-obsidian-950 border border-obsidian-600"></div>
                 ))}
               </div>
             ) : products.length === 0 ? (
-              <div className="bg-obsidian-950 p-12 border border-gold-500/30 text-center space-y-4">
-                <p className="font-serif text-2xl text-gold-400 font-bold uppercase">No Matching Jewellery Found</p>
+              <div className="bg-obsidian-950 p-8 sm:p-12 border border-gold-500/30 text-center space-y-4">
+                <p className="font-serif text-xl sm:text-2xl text-gold-400 font-bold uppercase">No Matching Jewellery Found</p>
                 <p className="text-xs text-pearl-300">Try adjusting your filters or search keywords.</p>
                 <button
                   onClick={resetFilters}
-                  className="px-6 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest shadow-obsidian-glow"
+                  className="px-6 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest shadow-obsidian-glow min-h-[44px]"
                 >
                   Reset All Filters
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 {products.map((product, idx) => (
                   <ProductCard key={product.id} product={product} priority={idx < 6} />
                 ))}
@@ -301,13 +313,17 @@ const Collections = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Drawer */}
+      {/* Mobile Filter Drawer Backdrop & Sheet */}
       {filterDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-obsidian-950/90 backdrop-blur-sm md:hidden">
+        <div className="fixed inset-0 z-50 flex justify-end bg-obsidian-950/80 backdrop-blur-md md:hidden">
           <div className="bg-obsidian-900 w-4/5 max-w-sm h-full p-6 overflow-y-auto space-y-6 text-left border-l border-gold-500/40 animate-in slide-in-from-right">
             <div className="flex items-center justify-between border-b border-obsidian-600 pb-4">
-              <h3 className="font-serif text-xl font-bold text-gold-400 uppercase">Filter Jewellery</h3>
-              <button onClick={() => setFilterDrawerOpen(false)} className="p-2 text-pearl-300 hover:text-gold-400">
+              <h3 className="font-serif text-lg font-bold text-gold-400 uppercase">Filter Jewellery</h3>
+              <button
+                onClick={() => setFilterDrawerOpen(false)}
+                className="p-2 text-pearl-300 hover:text-gold-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close Filter Drawer"
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -317,7 +333,7 @@ const Collections = () => {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-2.5 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100"
+                className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
               >
                 <option value="">All Categories</option>
                 {categories.map((c) => (
@@ -331,7 +347,7 @@ const Collections = () => {
               <select
                 value={collection}
                 onChange={(e) => setCollection(e.target.value)}
-                className="w-full p-2.5 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100"
+                className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
               >
                 <option value="">All Collections</option>
                 {collectionsList.map((col) => (
@@ -345,7 +361,7 @@ const Collections = () => {
               <select
                 value={material}
                 onChange={(e) => setMaterial(e.target.value)}
-                className="w-full p-2.5 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100"
+                className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
               >
                 <option value="">All Materials</option>
                 <option value="Gold">Gold</option>
@@ -354,10 +370,24 @@ const Collections = () => {
               </select>
             </div>
 
+            <div>
+              <label className="block text-xs font-mono font-bold text-gold-500 uppercase mb-2">Gender</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
+              >
+                <option value="">All Genders</option>
+                <option value="Women">Women</option>
+                <option value="Men">Men</option>
+                <option value="Kids">Kids</option>
+              </select>
+            </div>
+
             <div className="pt-4">
               <button
                 onClick={() => setFilterDrawerOpen(false)}
-                className="w-full py-3.5 bg-gold-500 text-obsidian-950 font-bold text-xs uppercase tracking-widest shadow-obsidian-glow"
+                className="w-full py-3.5 bg-gold-500 text-obsidian-950 font-bold text-xs uppercase tracking-widest shadow-obsidian-glow min-h-[44px]"
               >
                 Apply Filters
               </button>

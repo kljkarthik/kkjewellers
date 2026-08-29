@@ -64,74 +64,74 @@ const ContactUs = () => {
   const whatsappUrl = `https://wa.me/${settings?.whatsappNumber || '919440156446'}?text=${encodeURIComponent('Hello KK JEWELLERS, I would like to get directions and visit your showroom.')}`;
 
   return (
-    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-20">
+    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-16 sm:pt-20">
       <Navbar />
 
-      <section className="bg-obsidian-950 text-pearl-100 py-20 border-b border-gold-500/30 text-center">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <span className="text-xs uppercase tracking-[0.35em] text-gold-500 font-mono font-semibold block mb-2">
+      <section className="bg-obsidian-950 text-pearl-100 py-10 sm:py-20 border-b border-gold-500/30 text-center px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FLAGSHIP LOUNGE & CONCIERGE
           </span>
-          <h1 className="font-serif text-4xl sm:text-6xl font-normal text-gold-400 uppercase tracking-wide">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
             EXPERIENCE KK JEWELLERS
           </h1>
-          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-3 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Discover our collections in person at our flagship showroom lounge. Private bridal consultation suites available.
           </p>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-16 flex-grow w-full space-y-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 flex-grow w-full space-y-8 sm:space-y-16">
         
         {/* Contact Info Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-obsidian-950 p-8 border border-gold-500/30 text-center space-y-3">
-            <div className="w-12 h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
-              <MapPin className="w-6 h-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 text-center space-y-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
+              <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-gold-400 uppercase">Showroom Address</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-gold-400 uppercase">Showroom Address</h3>
             <p className="text-xs text-pearl-300 font-light leading-relaxed">{settings?.address}</p>
           </div>
 
-          <div className="bg-obsidian-950 p-8 border border-gold-500/30 text-center space-y-3">
-            <div className="w-12 h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
-              <Phone className="w-6 h-6" />
+          <div className="bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 text-center space-y-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
+              <Phone className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-gold-400 uppercase">Phone Concierge</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-gold-400 uppercase">Phone Concierge</h3>
             <p className="text-xs text-pearl-100 font-mono font-bold">{settings?.phone}</p>
             <p className="text-[11px] text-pearl-300">Mon - Sun: 10:30 AM - 08:30 PM</p>
           </div>
 
-          <div className="bg-obsidian-950 p-8 border border-gold-500/30 text-center space-y-3">
-            <div className="w-12 h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
-              <MessageCircle className="w-6 h-6" />
+          <div className="bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 text-center space-y-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
+              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-gold-400 uppercase">WhatsApp Concierge</h3>
-            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="text-xs text-gold-400 font-mono font-bold hover:underline block">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-gold-400 uppercase">WhatsApp Concierge</h3>
+            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="text-xs text-gold-400 font-mono font-bold hover:underline block py-1">
               +{(settings?.whatsappNumber)} (Click to Chat)
             </a>
           </div>
 
-          <div className="bg-obsidian-950 p-8 border border-gold-500/30 text-center space-y-3">
-            <div className="w-12 h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
-              <Mail className="w-6 h-6" />
+          <div className="bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 text-center space-y-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-obsidian-900 border border-gold-500/40 rounded-full flex items-center justify-center text-gold-500 mx-auto">
+              <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-gold-400 uppercase">Email Enquiries</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-gold-400 uppercase">Email Enquiries</h3>
             <p className="text-xs text-pearl-100 font-mono font-bold">{settings?.email}</p>
           </div>
         </div>
 
         {/* Section 28 & 30 Form & Map Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* Left Form Container */}
-          <div className="lg:col-span-7 bg-obsidian-950 p-8 border border-gold-500/30 shadow-2xl text-left">
+          <div className="lg:col-span-7 bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 shadow-2xl text-left">
             
             {/* Tab Selector Buttons */}
-            <div className="flex border-b border-obsidian-600 mb-8">
+            <div className="flex border-b border-obsidian-600 mb-6 sm:mb-8">
               <button
                 onClick={() => setActiveTab('enquiry')}
-                className={`flex-1 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-colors ${
+                className={`flex-1 py-3 text-[11px] sm:text-xs font-mono font-bold uppercase tracking-widest transition-colors min-h-[44px] ${
                   activeTab === 'enquiry'
                     ? 'border-b-2 border-gold-500 text-gold-500'
                     : 'text-pearl-300 hover:text-gold-400'
@@ -141,7 +141,7 @@ const ContactUs = () => {
               </button>
               <button
                 onClick={() => setActiveTab('appointment')}
-                className={`flex-1 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-colors ${
+                className={`flex-1 py-3 text-[11px] sm:text-xs font-mono font-bold uppercase tracking-widest transition-colors min-h-[44px] ${
                   activeTab === 'appointment'
                     ? 'border-b-2 border-gold-500 text-gold-500'
                     : 'text-pearl-300 hover:text-gold-400'
@@ -169,7 +169,7 @@ const ContactUs = () => {
                       placeholder="Enter full name"
                       value={enquiryForm.customerName}
                       onChange={e => setEnquiryForm({ ...enquiryForm, customerName: e.target.value })}
-                      className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400"
+                      className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400 min-h-[44px]"
                     />
                   </div>
 
@@ -182,7 +182,7 @@ const ContactUs = () => {
                         placeholder="+91 98765 43210"
                         value={enquiryForm.phone}
                         onChange={e => setEnquiryForm({ ...enquiryForm, phone: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400 min-h-[44px]"
                       />
                     </div>
                     <div>
@@ -192,7 +192,7 @@ const ContactUs = () => {
                         placeholder="email@example.com"
                         value={enquiryForm.email}
                         onChange={e => setEnquiryForm({ ...enquiryForm, email: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 focus:border-gold-400 min-h-[44px]"
                       />
                     </div>
                   </div>
@@ -212,7 +212,7 @@ const ContactUs = () => {
                   <button
                     type="submit"
                     disabled={enquiryLoading}
-                    className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all"
+                    className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.2em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all min-h-[48px]"
                   >
                     <Send className="w-4 h-4" /> SEND ENQUIRY
                   </button>
@@ -237,7 +237,7 @@ const ContactUs = () => {
                       required
                       value={appointForm.customerName}
                       onChange={e => setAppointForm({ ...appointForm, customerName: e.target.value })}
-                      className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100"
+                      className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
                     />
                   </div>
 
@@ -249,7 +249,7 @@ const ContactUs = () => {
                         required
                         value={appointForm.phone}
                         onChange={e => setAppointForm({ ...appointForm, phone: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
                       />
                     </div>
                     <div>
@@ -258,7 +258,7 @@ const ContactUs = () => {
                         type="email"
                         value={appointForm.email}
                         onChange={e => setAppointForm({ ...appointForm, email: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
                       />
                     </div>
                   </div>
@@ -272,7 +272,7 @@ const ContactUs = () => {
                         min={todayStr}
                         value={appointForm.preferredDate}
                         onChange={e => setAppointForm({ ...appointForm, preferredDate: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
                       />
                     </div>
                     <div>
@@ -280,7 +280,7 @@ const ContactUs = () => {
                       <select
                         value={appointForm.preferredTime}
                         onChange={e => setAppointForm({ ...appointForm, preferredTime: e.target.value })}
-                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100"
+                        className="w-full p-3 bg-obsidian-900 border border-gold-500/30 text-xs text-pearl-100 min-h-[44px]"
                       >
                         <option value="11:00 AM">11:00 AM</option>
                         <option value="02:30 PM">02:30 PM</option>
@@ -293,7 +293,7 @@ const ContactUs = () => {
                   <button
                     type="submit"
                     disabled={appointLoading}
-                    className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all"
+                    className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.2em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 transition-all min-h-[48px]"
                   >
                     <Calendar className="w-4 h-4" /> REQUEST A VISIT
                   </button>
@@ -304,8 +304,8 @@ const ContactUs = () => {
 
           {/* Right Google Maps & Location Directions */}
           <div className="lg:col-span-5 space-y-6 text-left">
-            <div className="bg-obsidian-950 p-8 border border-gold-500/30 shadow-2xl space-y-4">
-              <h3 className="font-serif text-2xl font-bold text-gold-400 uppercase">Showroom Map</h3>
+            <div className="bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 shadow-2xl space-y-4">
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-gold-400 uppercase">Showroom Map</h3>
               <p className="text-xs text-pearl-300 font-light">{settings?.address}</p>
 
               <div className="aspect-[4/3] overflow-hidden bg-obsidian-900 border border-gold-500/30">
@@ -323,7 +323,7 @@ const ContactUs = () => {
                   href={settings.googleMapsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full py-3.5 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.25em] text-xs flex items-center justify-center gap-2 transition-colors shadow-obsidian-glow"
+                  className="w-full py-3.5 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-2 transition-colors shadow-obsidian-glow min-h-[44px]"
                 >
                   <MapPin className="w-4 h-4" /> GET DIRECTIONS
                 </a>

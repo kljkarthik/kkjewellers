@@ -66,10 +66,10 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-obsidian-900 flex flex-col font-sans">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-6 py-32 flex-grow flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 sm:py-32 flex-grow flex items-center justify-center">
           <div className="text-center space-y-4">
-            <RefreshCw className="w-10 h-10 text-gold-500 animate-spin mx-auto" />
-            <p className="font-serif text-lg text-gold-400 uppercase tracking-widest">Loading Jewellery Details...</p>
+            <RefreshCw className="w-8 h-8 sm:w-10 sm:h-10 text-gold-500 animate-spin mx-auto" />
+            <p className="font-serif text-base sm:text-lg text-gold-400 uppercase tracking-widest">Loading Jewellery Details...</p>
           </div>
         </div>
         <Footer />
@@ -81,10 +81,10 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-obsidian-900 flex flex-col font-sans">
         <Navbar />
-        <div className="max-w-7xl mx-auto px-6 py-32 flex-grow text-center">
-          <h2 className="font-serif text-3xl text-gold-400 font-bold mb-4 uppercase">Piece Not Found</h2>
-          <p className="text-pearl-300 text-sm mb-6">{error}</p>
-          <Link to="/collections" className="px-8 py-3.5 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 sm:py-32 flex-grow text-center">
+          <h2 className="font-serif text-2xl sm:text-3xl text-gold-400 font-bold mb-4 uppercase">Piece Not Found</h2>
+          <p className="text-pearl-300 text-xs sm:text-sm mb-6">{error}</p>
+          <Link to="/collections" className="px-6 sm:px-8 py-3.5 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest min-h-[44px] inline-flex items-center">
             RETURN TO CATALOGUE
           </Link>
         </div>
@@ -96,18 +96,17 @@ const ProductDetail = () => {
   const images = product.images || [];
   const currentImage = images[selectedImageIndex]?.imageUrl || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
 
-  // Configurable WhatsApp Enquiry Message
-  const whatsappNumber = settings?.whatsappNumber || '919876543210';
+  const whatsappNumber = settings?.whatsappNumber || '919440156446';
   const whatsappMessage = `Hello KK JEWELLERS, I am interested in ${product.name} (${product.productCode}). I would like to know more about this piece.`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
-    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-20">
+    <div className="min-h-screen bg-obsidian-900 text-pearl-100 flex flex-col font-sans selection:bg-gold-500 selection:text-obsidian-950 pt-16 sm:pt-20">
       <Navbar />
 
       {/* Breadcrumb Bar */}
-      <div className="bg-obsidian-950 border-b border-obsidian-600 py-3.5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-mono text-pearl-300 flex items-center gap-2">
+      <div className="bg-obsidian-950 border-b border-obsidian-600 py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-[10px] sm:text-xs font-mono text-pearl-300 flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <Link to="/" className="hover:text-gold-400">HOME</Link> /
           <Link to="/collections" className="hover:text-gold-400">COLLECTIONS</Link> /
           <span className="text-gold-400 uppercase">{product.category?.name || 'JEWELLERY'}</span> /
@@ -116,8 +115,8 @@ const ProductDetail = () => {
       </div>
 
       {/* Main Product Section */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-16 flex-grow w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 flex-grow w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* LEFT: Large Photography + Thumbnail Slider + Zoom */}
           <div className="lg:col-span-7 space-y-4 text-left">
@@ -133,7 +132,7 @@ const ProductDetail = () => {
                 className="w-full h-full object-cover object-center transition-transform duration-700 filter brightness-95 group-hover:brightness-100"
               />
 
-              {/* Magnifier Lens Circular Lens */}
+              {/* Magnifier Lens */}
               {showMagnifier && (
                 <div
                   className="magnifier-lens hidden md:block"
@@ -152,24 +151,27 @@ const ProductDetail = () => {
               {/* Zoom Trigger Button */}
               <button
                 onClick={() => setLightboxOpen(true)}
-                className="absolute top-4 right-4 p-3 bg-obsidian-950/80 border border-gold-500/40 text-gold-400 hover:text-gold-300 transition-colors shadow-lg z-20"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2.5 sm:p-3 bg-obsidian-950/80 border border-gold-500/40 text-gold-400 hover:text-gold-300 transition-colors shadow-lg z-20 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 title="Fullscreen High-Res View"
+                aria-label="Zoom Image"
               >
                 <ZoomIn className="w-5 h-5" />
               </button>
 
-              {/* Prev / Next Image Overlay Controls */}
+              {/* Prev / Next Image Controls */}
               {images.length > 1 && (
                 <>
                   <button
                     onClick={() => setSelectedImageIndex((selectedImageIndex - 1 + images.length) % images.length)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-obsidian-950/80 border border-gold-500/30 text-gold-400 hover:bg-gold-500 hover:text-obsidian-950 transition-colors shadow"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-obsidian-950/80 border border-gold-500/30 text-gold-400 hover:bg-gold-500 hover:text-obsidian-950 transition-colors shadow min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Previous Image"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setSelectedImageIndex((selectedImageIndex + 1) % images.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-obsidian-950/80 border border-gold-500/30 text-gold-400 hover:bg-gold-500 hover:text-obsidian-950 transition-colors shadow"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-obsidian-950/80 border border-gold-500/30 text-gold-400 hover:bg-gold-500 hover:text-obsidian-950 transition-colors shadow min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Next Image"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
@@ -177,14 +179,14 @@ const ProductDetail = () => {
               )}
             </div>
 
-            {/* Thumbnails list */}
+            {/* Thumbnails List */}
             {images.length > 1 && (
-              <div className="flex items-center gap-3 overflow-x-auto pb-2">
+              <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-2 no-scrollbar">
                 {images.map((img, idx) => (
                   <button
                     key={img.id || idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-20 h-20 overflow-hidden border-2 shrink-0 transition-all ${
+                    className={`w-16 h-16 sm:w-20 sm:h-20 overflow-hidden border-2 shrink-0 transition-all ${
                       selectedImageIndex === idx ? 'border-gold-400 scale-105 shadow-md' : 'border-gold-500/20 opacity-60 hover:opacity-100'
                     }`}
                   >
@@ -196,30 +198,30 @@ const ProductDetail = () => {
           </div>
 
           {/* RIGHT: Product Details & Action Buttons */}
-          <div className="lg:col-span-5 space-y-6 bg-obsidian-950 p-8 border border-gold-500/30 text-left">
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6 bg-obsidian-950 p-5 sm:p-8 border border-gold-500/30 text-left">
             <div>
               <div className="flex items-center justify-between text-xs font-mono text-gold-500 mb-1">
                 <span>SKU: {product.productCode}</span>
-                {product.collection && <span className="uppercase tracking-widest text-pearl-300 font-bold">{product.collection.name}</span>}
+                {product.collection && <span className="uppercase tracking-widest text-pearl-300 font-bold text-[10px] sm:text-xs">{product.collection.name}</span>}
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-pearl-100 uppercase tracking-wide mb-3">
+              <h1 className="font-serif text-2xl sm:text-4xl font-normal text-pearl-100 uppercase tracking-wide mb-3">
                 {product.name}
               </h1>
 
               <div className="flex flex-wrap gap-2 mb-4 font-mono text-xs">
                 {product.material && (
-                  <span className="px-3 py-1 bg-gold-500 text-obsidian-950 font-bold uppercase">
+                  <span className="px-3 py-1 bg-gold-500 text-obsidian-950 font-bold uppercase text-[10px] sm:text-xs">
                     {product.material}
                   </span>
                 )}
                 {product.purity && (
-                  <span className="px-3 py-1 bg-obsidian-900 border border-gold-500/40 text-gold-400 font-medium">
+                  <span className="px-3 py-1 bg-obsidian-900 border border-gold-500/40 text-gold-400 font-medium text-[10px] sm:text-xs">
                     PURITY: {product.purity}
                   </span>
                 )}
                 {product.weight && (
-                  <span className="px-3 py-1 bg-obsidian-900 border border-gold-500/40 text-gold-400 font-medium">
+                  <span className="px-3 py-1 bg-obsidian-900 border border-gold-500/40 text-gold-400 font-medium text-[10px] sm:text-xs">
                     APPROX. WEIGHT: {product.weight}
                   </span>
                 )}
@@ -227,40 +229,40 @@ const ProductDetail = () => {
             </div>
 
             {/* Specifications Matrix */}
-            <div className="grid grid-cols-2 gap-3 p-4 bg-obsidian-900 border border-obsidian-600 text-xs font-mono">
+            <div className="grid grid-cols-2 gap-3 p-3.5 sm:p-4 bg-obsidian-900 border border-obsidian-600 text-xs font-mono">
               <div>
-                <span className="text-pearl-300 uppercase block">Category</span>
+                <span className="text-pearl-300 uppercase block text-[10px]">Category</span>
                 <span className="font-bold text-gold-400">{product.category?.name || 'N/A'}</span>
               </div>
               <div>
-                <span className="text-pearl-300 uppercase block">Occasion</span>
+                <span className="text-pearl-300 uppercase block text-[10px]">Occasion</span>
                 <span className="font-bold text-gold-400">{product.occasion || 'Luxury'}</span>
               </div>
               <div>
-                <span className="text-pearl-300 uppercase block">Gender</span>
+                <span className="text-pearl-300 uppercase block text-[10px]">Gender</span>
                 <span className="font-bold text-gold-400">{product.gender || 'Unisex'}</span>
               </div>
               <div>
-                <span className="text-pearl-300 uppercase block">Purity Standard</span>
+                <span className="text-pearl-300 uppercase block text-[10px]">Purity Standard</span>
                 <span className="font-bold text-gold-400">BIS 916 Certified</span>
               </div>
             </div>
 
             {/* Description */}
             <div className="space-y-2">
-              <h4 className="font-serif text-base font-bold text-gold-500 uppercase tracking-wider">Craftsmanship Details</h4>
+              <h4 className="font-serif text-sm sm:text-base font-bold text-gold-500 uppercase tracking-wider">Craftsmanship Details</h4>
               <p className="text-pearl-300 text-xs leading-relaxed font-light">
                 {product.fullDescription || product.shortDescription}
               </p>
             </div>
 
-            {/* CONVERSION BUTTONS (STRICTLY NO CART / BUY NOW) */}
+            {/* CONVERSION BUTTONS */}
             <div className="space-y-3 pt-4 border-t border-obsidian-600">
               
               {/* ENQUIRE NOW Button */}
               <button
                 onClick={() => setEnquiryModalOpen(true)}
-                className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold text-xs uppercase tracking-[0.25em] transition-all shadow-obsidian-glow flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold text-xs uppercase tracking-[0.2em] transition-all shadow-obsidian-glow flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <Mail className="w-4 h-4" /> ENQUIRE NOW
               </button>
@@ -270,7 +272,7 @@ const ProductDetail = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 bg-obsidian-900 hover:bg-obsidian-800 text-gold-400 border border-gold-500/40 font-bold text-xs uppercase tracking-[0.25em] transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 bg-obsidian-900 hover:bg-obsidian-800 text-gold-400 border border-gold-500/40 font-bold text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <MessageCircle className="w-4 h-4" /> WHATSAPP ENQUIRE
               </a>
@@ -278,26 +280,26 @@ const ProductDetail = () => {
               {/* BOOK SHOWROOM VISIT Button */}
               <button
                 onClick={() => setVisitModalOpen(true)}
-                className="w-full py-3.5 bg-obsidian-900 hover:bg-obsidian-800 text-pearl-100 border border-gold-500/30 font-bold text-xs uppercase tracking-[0.25em] transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-obsidian-900 hover:bg-obsidian-800 text-pearl-100 border border-gold-500/30 font-bold text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <Calendar className="w-4 h-4 text-gold-500" /> BOOK SHOWROOM VISIT
               </button>
             </div>
 
-            <div className="pt-2 flex items-center justify-center gap-2 text-[11px] text-pearl-300 font-mono">
-              <ShieldCheck className="w-4 h-4 text-gold-500" />
+            <div className="pt-2 flex items-center justify-center gap-2 text-[10px] sm:text-[11px] text-pearl-300 font-mono">
+              <ShieldCheck className="w-4 h-4 text-gold-500 shrink-0" />
               <span>BIS 916 Hallmark &bull; Confidential Price Quote on Enquiry</span>
             </div>
           </div>
         </div>
 
-        {/* RELATED JEWELLERY */}
+        {/* SIMILAR PIECES */}
         {relatedProducts.length > 0 && (
-          <section className="mt-20 pt-12 border-t border-obsidian-600">
-            <h2 className="font-serif text-3xl font-normal text-gold-400 uppercase tracking-wider mb-8 text-left">
+          <section className="mt-12 sm:mt-20 pt-8 sm:pt-12 border-t border-obsidian-600">
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-gold-400 uppercase tracking-wider mb-6 sm:mb-8 text-left">
               SIMILAR PIECES
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {relatedProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
               ))}

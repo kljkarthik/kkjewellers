@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, User, Phone, Mail, Sparkles, CheckCircle2 } from 'lucide-react';
 import { bookAppointment } from '../services/leadService';
 
@@ -16,6 +16,17 @@ const BookVisitModal = ({ isOpen, onClose, initialCollection = '' }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -39,90 +50,91 @@ const BookVisitModal = ({ isOpen, onClose, initialCollection = '' }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-wine-950/80 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-gold-400/40 animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian-950/90 backdrop-blur-md">
+      <div className="bg-obsidian-900 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-none shadow-2xl border border-gold-500/40 animate-in fade-in duration-300 text-left">
         
         {/* Header */}
-        <div className="bg-wine-900 text-ivory-50 p-6 flex items-center justify-between relative border-b border-gold-500/30">
+        <div className="bg-obsidian-950 text-pearl-100 p-4 sm:p-6 flex items-center justify-between border-b border-gold-500/30">
           <div>
-            <span className="text-xs uppercase tracking-widest text-gold-400 font-semibold flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> VIP Experience
+            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-gold-400 font-semibold flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" /> VIP EXPERIENCE
             </span>
-            <h3 className="font-serif text-2xl text-gold-300 font-bold">Book Showroom Visit</h3>
+            <h3 className="font-serif text-xl sm:text-2xl text-gold-400 font-bold uppercase tracking-wider">BOOK SHOWROOM VISIT</h3>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 text-ivory-300 hover:text-white transition-colors"
+            className="p-2 text-pearl-300 hover:text-gold-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Close Modal"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Form Body */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {success ? (
-            <div className="text-center py-8">
-              <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto mb-4 animate-bounce" />
-              <h4 className="font-serif text-2xl text-wine-900 font-bold mb-2">Visit Scheduled</h4>
-              <p className="text-ivory-700 text-sm mb-6 max-w-md mx-auto">
-                We are delighted to host you! Our concierge team will confirm your private showroom suite appointment for <span className="font-semibold text-wine-900">{formData.preferredDate}</span> at <span className="font-semibold text-wine-900">{formData.preferredTime}</span>.
+            <div className="text-center py-8 space-y-4">
+              <CheckCircle2 className="w-16 h-16 text-gold-400 mx-auto animate-bounce" />
+              <h4 className="font-serif text-2xl text-gold-300 font-bold uppercase">Visit Scheduled</h4>
+              <p className="text-pearl-200 text-xs font-light max-w-md mx-auto leading-relaxed">
+                We are delighted to host you! Our concierge team will confirm your private showroom suite appointment for <span className="font-semibold text-gold-400">{formData.preferredDate}</span> at <span className="font-semibold text-gold-400">{formData.preferredTime}</span>.
               </p>
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 bg-wine-800 hover:bg-wine-900 text-gold-300 rounded-lg text-sm uppercase tracking-wider font-semibold transition-colors"
+                className="px-8 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest min-h-[44px]"
               >
                 Close Window
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 font-sans">
               {error && (
-                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-lg">
+                <div className="p-3 bg-rose-950/80 border border-rose-500/50 text-rose-200 text-xs font-mono">
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Full Name *</label>
+                <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Full Name *</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-ivory-600" />
+                  <User className="absolute left-3.5 top-3.5 w-4 h-4 text-pearl-300" />
                   <input
                     type="text"
                     required
                     placeholder="Enter full name"
                     value={formData.customerName}
                     onChange={e => setFormData({ ...formData, customerName: e.target.value })}
-                    className="w-full pl-10 pr-4 py-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                    className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Mobile Number *</label>
+                  <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Mobile Number *</label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-3 w-4 h-4 text-ivory-600" />
+                    <Phone className="absolute left-3.5 top-3.5 w-4 h-4 text-pearl-300" />
                     <input
                       type="tel"
                       required
                       placeholder="+91 98765 43210"
                       value={formData.phone}
                       onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                      className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Email Address</label>
+                  <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 w-4 h-4 text-ivory-600" />
+                    <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-pearl-300" />
                     <input
                       type="email"
                       placeholder="your.email@example.com"
                       value={formData.email}
                       onChange={e => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                      className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -130,28 +142,28 @@ const BookVisitModal = ({ isOpen, onClose, initialCollection = '' }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Preferred Date *</label>
+                  <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Preferred Date *</label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-3 w-4 h-4 text-ivory-600" />
+                    <Calendar className="absolute left-3.5 top-3.5 w-4 h-4 text-pearl-300" />
                     <input
                       type="date"
                       required
                       min={todayStr}
                       value={formData.preferredDate}
                       onChange={e => setFormData({ ...formData, preferredDate: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                      className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Preferred Time *</label>
+                  <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Preferred Time *</label>
                   <div className="relative">
-                    <Clock className="absolute left-3 top-3 w-4 h-4 text-ivory-600" />
+                    <Clock className="absolute left-3.5 top-3.5 w-4 h-4 text-pearl-300" />
                     <select
                       value={formData.preferredTime}
                       onChange={e => setFormData({ ...formData, preferredTime: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                      className="w-full pl-10 pr-4 py-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                     >
                       <option value="11:00 AM">11:00 AM</option>
                       <option value="12:30 PM">12:30 PM</option>
@@ -165,11 +177,11 @@ const BookVisitModal = ({ isOpen, onClose, initialCollection = '' }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Interested Collection</label>
+                <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Interested Collection</label>
                 <select
                   value={formData.collectionName}
                   onChange={e => setFormData({ ...formData, collectionName: e.target.value })}
-                  className="w-full p-2.5 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                  className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400 min-h-[44px]"
                 >
                   <option value="Bridal Collection">Bridal Collection</option>
                   <option value="Traditional Collection">Traditional Collection</option>
@@ -181,20 +193,20 @@ const BookVisitModal = ({ isOpen, onClose, initialCollection = '' }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-ivory-800 uppercase tracking-wider mb-1">Special Requirements (Optional)</label>
+                <label className="block text-[11px] font-mono font-bold text-gold-400 uppercase mb-1">Special Requirements (Optional)</label>
                 <textarea
                   rows="2"
                   placeholder="Mention specific ornaments or design preferences..."
                   value={formData.message}
                   onChange={e => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-3 bg-ivory-50/50 border border-ivory-300 rounded-lg text-sm text-ivory-900 focus:outline-none focus:border-gold-500"
+                  className="w-full p-3 bg-obsidian-950 border border-gold-500/30 text-xs text-pearl-100 focus:outline-none focus:border-gold-400"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-wine-800 hover:bg-wine-900 text-gold-300 rounded-xl font-semibold uppercase tracking-widest text-xs shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold uppercase tracking-[0.2em] text-xs shadow-obsidian-glow flex items-center justify-center gap-2 min-h-[48px]"
               >
                 {loading ? 'Booking Visit...' : 'Confirm Showroom Visit'}
               </button>

@@ -15,6 +15,7 @@
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: #050605;
@@ -25,6 +26,15 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #D9C68F;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Ken Burns Slow Zoom Effect */
@@ -87,21 +97,25 @@
   50% { opacity: 0.7; transform: translateY(-40px) translateX(20px); }
 }
 
-/* Custom Desktop Cursor */
-@media (min-width: 1024px) {
-  .custom-cursor-active button,
-  .custom-cursor-active a,
-  .custom-cursor-active [role="button"] {
-    cursor: none;
-  }
+/* Gold Sweep Button Micro-Interaction */
+.gold-sweep-btn {
+  position: relative;
+  overflow: hidden;
 }
 
-.thin-gold-border {
-  border: 1px solid rgba(191, 167, 106, 0.3);
+.gold-sweep-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: all 0.6s ease;
 }
 
-.thin-gold-border:hover {
-  border-color: rgba(217, 198, 143, 0.8);
+.gold-sweep-btn:hover::after {
+  left: 100%;
 }
 
 /* Glassmorphism & Gold Glow Effects */
@@ -138,3 +152,13 @@
   background-repeat: no-repeat;
 }
 
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-ken-burns,
+  .gold-shimmer-text,
+  .gold-particle,
+  .animate-expand-line {
+    animation: none !important;
+    transition: none !important;
+  }
+}
