@@ -72,7 +72,7 @@ public class SeedDataService implements CommandLineRunner {
             s.setWhatsappNumber("919440156446");
             s.setEmail("enquiry@kkjewellers.com");
             s.setAddress("KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh");
-            s.setGoogleMapsUrl("https://www.google.com/maps/place/KK+JEWELLERS/@17.0118298,81.1917804,17z/data=!4m14!1m7!3m6!1s0x3a365e70dec22845:0x96133a8e2d0219a1!2sKK+JEWELLERS!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869!3m5!1s0x3a365e70dec22845:0x96133a8e2d0219a1!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869");
+            s.setGoogleMapsUrl("https://www.google.com/maps/place/KK+JEWELLERS/@17.0118298,81.1917804,17z/data=!3m1!4b1!4m6!3m5!1s0x3a365e70dec22845:0x96133a8e2d0219a1!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D");
             s.setOpeningHours("Mon - Sun: 10:30 AM - 08:30 PM");
             s.setInstagram("https://instagram.com/kkjewellers_official");
             s.setFacebook("https://facebook.com/kkjewellers.official");

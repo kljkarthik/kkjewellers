@@ -260,12 +260,14 @@ const Home = () => {
             {settings?.address || 'KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh'}
           </p>
           <div className="pt-2 sm:pt-4">
-            <button
-              onClick={() => setCustomEnquiryOpen(true)}
-              className="px-8 sm:px-10 py-3.5 sm:py-4 bg-gold-500 text-obsidian-950 font-bold text-xs uppercase tracking-[0.2em] shadow-obsidian-glow min-h-[44px]"
+            <a
+              href={settings?.googleMapsUrl || 'https://www.google.com/maps/place/KK+JEWELLERS/@17.0118298,81.1917804,17z/data=!3m1!4b1!4m6!3m5!1s0x3a365e70dec22845:0x96133a8e2d0219a1!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3.5 sm:py-4 bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold text-xs uppercase tracking-[0.2em] shadow-obsidian-glow min-h-[44px] transition-colors"
             >
-              BOOK PRIVATE SHOWROOM APPOINTMENT
-            </button>
+              <MapPin className="w-4 h-4" /> GET DIRECTIONS
+            </a>
           </div>
         </div>
       </section>

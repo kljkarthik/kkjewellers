@@ -11,7 +11,7 @@ const defaultSettings = {
   whatsappNumber: '919440156446',
   email: 'enquiry@kkjewellers.com',
   address: 'KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh',
-  googleMapsUrl: 'https://www.google.com/maps/place/KK+JEWELLERS/@17.0118298,81.1917804,17z/data=!4m14!1m7!3m6!1s0x3a365e70dec22845:0x96133a8e2d0219a1!2sKK+JEWELLERS!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869!3m5!1s0x3a365e70dec22845:0x96133a8e2d0219a1!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869',
+  googleMapsUrl: 'https://www.google.com/maps/place/KK+JEWELLERS/@17.0118298,81.1917804,17z/data=!3m1!4b1!4m6!3m5!1s0x3a365e70dec22845:0x96133a8e2d0219a1!8m2!3d17.0118298!4d81.1943553!16s%2Fg%2F11g7z8t869?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D',
   openingHours: 'Mon - Sun: 10:30 AM - 08:30 PM',
   instagram: 'https://instagram.com/kkjewellers_official',
   facebook: 'https://facebook.com/kkjewellers.official',
