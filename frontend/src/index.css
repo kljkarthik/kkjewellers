@@ -152,12 +152,23 @@
   background-repeat: no-repeat;
 }
 
+/* Continuous Marquee Animation */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marqueeScroll 35s linear infinite;
+}
+
 /* Reduced Motion Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .animate-ken-burns,
   .gold-shimmer-text,
   .gold-particle,
-  .animate-expand-line {
+  .animate-expand-line,
+  .animate-marquee {
     animation: none !important;
     transition: none !important;
   }

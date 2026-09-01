@@ -3,6 +3,7 @@ import { ShieldCheck, Gem, HeartHandshake, Award, Quote } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+import ScrollRevealText from '../components/typography/ScrollRevealText';
 
 const AboutUs = () => {
   return (
@@ -15,9 +16,10 @@ const AboutUs = () => {
           <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             LEGACY & HERITAGE
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
-            ABOUT KK JEWELLERS
-          </h1>
+          <ScrollRevealText
+            text="ABOUT KK JEWELLERS"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide justify-center flex"
+          />
           <p className="font-serif italic text-sm sm:text-xl text-pearl-200 mt-2 sm:mt-3 font-light max-w-2xl mx-auto leading-relaxed">
             “Timeless craftsmanship. Exceptional jewellery. Created for generations.”
           </p>

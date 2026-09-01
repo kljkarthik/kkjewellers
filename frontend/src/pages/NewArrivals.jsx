@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+import ScrollRevealText from '../components/typography/ScrollRevealText';
 import { getNewArrivals } from '../services/productService';
 
 const NewArrivals = () => {
@@ -32,9 +33,10 @@ const NewArrivals = () => {
           <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FRESH CREATIONS
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
-            NEW ARRIVALS
-          </h1>
+          <ScrollRevealText
+            text="NEW ARRIVALS"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide justify-center flex"
+          />
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Be the first to discover our latest handcrafted 22K gold and certified solitaire diamond additions.
           </p>

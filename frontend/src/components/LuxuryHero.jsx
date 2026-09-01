@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
 
 const LuxuryHero = () => {
@@ -40,8 +41,22 @@ const LuxuryHero = () => {
 
           {/* Main Heading */}
           <h1 className="font-serif text-4xl sm:text-7xl lg:text-8xl font-normal text-pearl-100 uppercase tracking-tight leading-[1.05] sm:leading-[0.95]">
-            JEWELS THAT <br />
-            <span className="gold-shimmer-text italic font-serif">DEFINE YOUR LEGACY.</span>
+            <motion.span
+              className="block overflow-hidden pb-1"
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              JEWELS THAT
+            </motion.span>
+            <motion.span
+              className="gold-shimmer-text italic font-serif block overflow-hidden pb-1"
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            >
+              DEFINE YOUR LEGACY.
+            </motion.span>
           </h1>
 
           {/* Gold Line Animation */}

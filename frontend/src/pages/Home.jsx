@@ -8,6 +8,10 @@ import ProductCard from '../components/ProductCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import LightboxModal from '../components/LightboxModal';
 import EnquiryModal from '../components/EnquiryModal';
+import ScrollRevealText from '../components/typography/ScrollRevealText';
+import GoldAccentText from '../components/typography/GoldAccentText';
+import EditorialMarquee from '../components/typography/EditorialMarquee';
+import ScrambleText from '../components/typography/ScrambleText';
 import { getFeaturedProducts, getNewArrivals } from '../services/productService';
 import { getGallery } from '../services/settingsService';
 import { useSettings } from '../context/SettingsContext';
@@ -80,6 +84,9 @@ const Home = () => {
       {/* SECTION 7 & 8 — 100vh CINEMATIC HERO */}
       <LuxuryHero />
 
+      {/* EDITORIAL TYPOGRAPHY MARQUEE */}
+      <EditorialMarquee />
+
       {/* SECTION 11 — THE SIGNATURE COLLECTIONS */}
       <section className="py-16 sm:py-24 bg-obsidian-700 border-y border-gold-500/20 text-pearl-100 relative px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -88,12 +95,13 @@ const Home = () => {
             <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold">
               CURATED EXPRESSIONS
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-pearl-100 tracking-wider uppercase">
-              THE SIGNATURE COLLECTIONS
-            </h2>
+            <ScrollRevealText
+              text="THE SIGNATURE COLLECTIONS"
+              className="font-serif text-3xl sm:text-5xl font-normal text-pearl-100 tracking-wider uppercase justify-center flex"
+            />
             <div className="w-20 sm:w-24 h-0.5 bg-gold-500 mx-auto"></div>
             <p className="font-serif italic text-sm sm:text-base text-pearl-300 font-light">
-              Curated expressions of craftsmanship and timeless design.
+              Curated expressions of <GoldAccentText>craftsmanship</GoldAccentText> and timeless design.
             </p>
           </div>
 
@@ -140,7 +148,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SECTION 13 — PRODUCT CATALOGUE (2 Columns on Mobile!) */}
+      {/* SECTION 15 — FEATURED PRODUCTS / SIGNATURE PIECES */}
       <section className="py-16 sm:py-24 bg-obsidian-900 border-b border-obsidian-600 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           
@@ -148,9 +156,10 @@ const Home = () => {
             <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold">
               HOUSE OF KK JEWELLERS
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-pearl-100 tracking-wider uppercase">
-              SIGNATURE PIECES
-            </h2>
+            <ScrollRevealText
+              text="SIGNATURE PIECES"
+              className="font-serif text-3xl sm:text-5xl font-normal text-pearl-100 tracking-wider uppercase justify-center flex"
+            />
             <div className="w-20 sm:w-24 h-0.5 bg-gold-500 mx-auto"></div>
             <p className="font-serif italic text-sm sm:text-base text-pearl-300 font-light">
               A curated selection of masterworks from our fine jewellery catalogue.
@@ -165,7 +174,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SECTION 19 — THE BRIDAL EDIT */}
+      {/* SECTION 17 — BRIDAL CAMPAIGN */}
       <section className="relative py-20 sm:py-36 bg-obsidian-950 text-pearl-100 overflow-hidden border-b border-gold-500/30">
         <div className="absolute inset-0 opacity-40">
           <img
@@ -181,16 +190,17 @@ const Home = () => {
             ROYAL BRIDAL SANCTUARY
           </span>
 
-          <h2 className="font-serif text-3xl sm:text-7xl font-normal text-gold-400 tracking-wider uppercase">
-            THE BRIDAL EDIT
-          </h2>
+          <ScrollRevealText
+            text="THE BRIDAL EDIT"
+            className="font-serif text-3xl sm:text-7xl font-normal text-gold-400 tracking-wider uppercase justify-center flex"
+          />
 
           <p className="font-serif italic text-lg sm:text-3xl text-pearl-100 font-light">
-            “For moments that become memories.”
+            &ldquo;For moments that become memories.&rdquo;
           </p>
 
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto font-light leading-relaxed">
-            From heavy uncut Polki chokers to long temple harams and emerald drop matha pattis, our bridal suite is engineered to make every Indian bride radiate timeless heritage.
+            From heavy uncut Polki chokers to long temple harams and emerald drop matha pattis, our bridal suite is engineered to make every Indian bride radiate timeless <GoldAccentText>HERITAGE</GoldAccentText>.
           </p>
 
           <div className="pt-4 sm:pt-6">
@@ -204,7 +214,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SECTION 20 — HERITAGE SECTION */}
+      {/* SECTION 20 — HERITAGE SECTION WITH SCRAMBLE TEXT */}
       <section className="py-0 bg-obsidian-900 border-b border-obsidian-600">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           
@@ -223,11 +233,11 @@ const Home = () => {
             </span>
 
             <h2 className="font-serif text-3xl sm:text-5xl font-normal text-pearl-100 tracking-wider uppercase leading-tight">
-              CRAFTED THROUGH GENERATIONS
+              <ScrambleText text="CRAFTED THROUGH GENERATIONS" className="font-serif uppercase" />
             </h2>
 
             <p className="font-serif italic text-base sm:text-xl text-gold-400 font-light leading-relaxed border-l-2 border-gold-500 pl-3 sm:pl-4">
-              Where traditional artistry meets contemporary design.
+              Where traditional <GoldAccentText>CRAFT</GoldAccentText> meets contemporary design.
             </p>
 
             <p className="text-xs sm:text-sm text-pearl-300 leading-relaxed font-light">
@@ -253,9 +263,10 @@ const Home = () => {
           <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-400 font-mono font-semibold block">
             VISIT OUR FLAGSHIP SHOWROOM
           </span>
-          <h2 className="font-serif text-2xl sm:text-4xl font-normal text-pearl-100 uppercase tracking-wider">
-            {settings?.businessName || 'KK JEWELLERS'}, KAMAVARAPUKOTA
-          </h2>
+          <ScrollRevealText
+            text={`${settings?.businessName || 'KK JEWELLERS'}, KAMAVARAPUKOTA`}
+            className="font-serif text-2xl sm:text-4xl font-normal text-pearl-100 uppercase tracking-wider justify-center flex"
+          />
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto font-light leading-relaxed">
             {settings?.address || 'KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh'}
           </p>

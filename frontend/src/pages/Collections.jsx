@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+import ScrollRevealText from '../components/typography/ScrollRevealText';
 import { getProducts, getCategories, getCollections } from '../services/productService';
 
 const Collections = () => {
@@ -107,9 +108,10 @@ const Collections = () => {
           <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FINE JEWELLERY CATALOGUE
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
-            THE COLLECTIONS
-          </h1>
+          <ScrollRevealText
+            text="THE COLLECTIONS"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide justify-center flex"
+          />
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Explore handcrafted 22K gold, certified solitaire diamond ornaments, and royal Indian bridal suites.
           </p>

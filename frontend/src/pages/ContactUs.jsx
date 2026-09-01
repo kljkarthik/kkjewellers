@@ -3,6 +3,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle, Calendar, Send, CheckCircle2
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+import ScrollRevealText from '../components/typography/ScrollRevealText';
 import { useSettings } from '../context/SettingsContext';
 import { submitEnquiry, bookAppointment } from '../services/leadService';
 
@@ -41,8 +42,9 @@ const ContactUs = () => {
     try {
       await submitEnquiry(enquiryForm);
       setEnquirySuccess(true);
+      setEnquiryForm({ customerName: '', phone: '', email: '', message: '' });
     } catch (err) {
-      alert('Failed to send enquiry.');
+      console.error('Error submitting enquiry:', err);
     } finally {
       setEnquiryLoading(false);
     }
@@ -54,8 +56,17 @@ const ContactUs = () => {
     try {
       await bookAppointment(appointForm);
       setAppointSuccess(true);
+      setAppointForm({
+        customerName: '',
+        phone: '',
+        email: '',
+        preferredDate: todayStr,
+        preferredTime: '11:00 AM',
+        collectionName: 'Bridal Collection',
+        message: ''
+      });
     } catch (err) {
-      alert(err.response?.data?.error || 'Failed to book appointment.');
+      console.error('Error booking appointment:', err);
     } finally {
       setAppointLoading(false);
     }
@@ -72,9 +83,10 @@ const ContactUs = () => {
           <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-gold-500 font-mono font-semibold block mb-2">
             FLAGSHIP LOUNGE & CONCIERGE
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide">
-            EXPERIENCE KK JEWELLERS
-          </h1>
+          <ScrollRevealText
+            text="EXPERIENCE KK JEWELLERS"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-gold-400 uppercase tracking-wide justify-center flex"
+          />
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto mt-2 sm:mt-3 font-light leading-relaxed">
             Discover our collections in person at our flagship showroom lounge. Private bridal consultation suites available.
           </p>
