@@ -127,7 +127,7 @@ const Footer = () => {
             <div className="space-y-3 text-xs text-pearl-300 font-light">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-gold-500 shrink-0 mt-0.5" />
-                <p>{settings?.address || 'KK JEWELLERS, Main Road, Tanuku, Andhra Pradesh'}</p>
+                <p>{settings?.address || 'KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh'}</p>
               </div>
 
               <div className="flex items-center gap-2.5">

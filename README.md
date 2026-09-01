@@ -1,6 +1,6 @@
 # 💎 KK JEWELLERS — Deployed Storefront & Management Portal
 
-Luxurious e-commerce storefront for KK JEWELLERS (Tanuku, AP), built with React, Vite, Tailwind CSS, and Spring Boot REST backend.
+Luxurious e-commerce storefront for KK JEWELLERS (Kamavarapukota, AP), built with React, Vite, Tailwind CSS, and Spring Boot REST backend.
 
 ---
 

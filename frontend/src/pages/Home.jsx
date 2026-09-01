@@ -254,10 +254,10 @@ const Home = () => {
             VISIT OUR FLAGSHIP SHOWROOM
           </span>
           <h2 className="font-serif text-2xl sm:text-4xl font-normal text-pearl-100 uppercase tracking-wider">
-            {settings?.businessName || 'KK JEWELLERS'}, TANUKU
+            {settings?.businessName || 'KK JEWELLERS'}, KAMAVARAPUKOTA
           </h2>
           <p className="text-xs sm:text-sm text-pearl-300 max-w-xl mx-auto font-light leading-relaxed">
-            {settings?.address || 'Main Road, Tanuku, Andhra Pradesh 534211'}
+            {settings?.address || 'KK JEWELLERS, Main Road, Kamavarapukota, Andhra Pradesh'}
           </p>
           <div className="pt-2 sm:pt-4">
             <button
