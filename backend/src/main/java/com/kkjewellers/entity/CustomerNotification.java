@@ -1,48 +1,39 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "customer_notifications")
+@Document(collection = "customer_notifications")
 public class CustomerNotification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_user_id", nullable = false)
+    @DBRef
     private CustomerUser customerUser;
 
-    @Column(nullable = false)
     private String title;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
-
     private boolean isRead = false;
-
     private String type = "GENERAL"; // ENQUIRY, APPOINTMENT, COLLECTION, GENERAL
-
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
+    public CustomerNotification() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public CustomerNotification() {}
 
     public CustomerNotification(CustomerUser customerUser, String title, String message, String type) {
         this.customerUser = customerUser;
         this.title = title;
         this.message = message;
         this.type = type;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public CustomerUser getCustomerUser() { return customerUser; }
     public void setCustomerUser(CustomerUser customerUser) { this.customerUser = customerUser; }

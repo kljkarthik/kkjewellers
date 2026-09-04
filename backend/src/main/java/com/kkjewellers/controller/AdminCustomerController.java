@@ -71,7 +71,7 @@ public class AdminCustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerDetail(@PathVariable Long id) {
+    public ResponseEntity<?> getCustomerDetail(@PathVariable String id) {
         Optional<CustomerUser> userOpt = customerUserRepository.findById(id);
         if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -80,7 +80,7 @@ public class AdminCustomerController {
         CustomerUser customer = userOpt.get();
         List<WishlistItem> wishlist = wishlistItemRepository.findByCustomerUserIdOrderByCreatedAtDesc(id);
         List<Enquiry> enquiries = enquiryRepository.findByCustomerUserIdOrderByCreatedAtDesc(id);
-        List<Appointment> appointments = appointmentRepository.findByCustomerUserIdOrderByPreferredDateAscCreatedAtDesc(id);
+        List<Appointment> appointments = appointmentRepository.findByCustomerUserIdOrderByCreatedAtDesc(id);
 
         Map<String, Object> response = new HashMap<>();
         response.put("customer", customer);

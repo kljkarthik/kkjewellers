@@ -1,36 +1,28 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "products", indexes = {
-    @Index(name = "idx_products_active", columnList = "active"),
-    @Index(name = "idx_products_featured", columnList = "featured"),
-    @Index(name = "idx_products_new_arrival", columnList = "newArrival"),
-    @Index(name = "idx_products_code", columnList = "productCode"),
-    @Index(name = "idx_products_category", columnList = "category_id"),
-    @Index(name = "idx_products_collection", columnList = "collection_id")
-})
+@Document(collection = "products")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String productCode; // SKU, e.g., KK-NK-001
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @DBRef
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
+    @DBRef
     private CollectionEntity collection;
 
     private String material; // Gold, Diamond, Silver
@@ -39,19 +31,20 @@ public class Product {
     private String gender;   // Women, Men, Kids
     private String occasion; // Wedding, Engagement, Festival, Party, Daily Wear
 
-    @Column(length = 500)
     private String shortDescription;
-
-    @Column(length = 3000)
     private String fullDescription;
 
+    @Indexed
     private Boolean featured;
+
+    @Indexed
     private Boolean newArrival;
+
+    @Indexed
     private Boolean active;
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ProductImage> images = new ArrayList<>();
 
     public Product() {
@@ -72,8 +65,8 @@ public class Product {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

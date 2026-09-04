@@ -1,23 +1,17 @@
 package com.kkjewellers.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "product_images")
 public class ProductImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
 
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String imageUrl;
-
+    private String cloudinaryPublicId;
     private Boolean primaryImage;
     private Integer displayOrder;
 
@@ -32,15 +26,25 @@ public class ProductImage {
         this.displayOrder = displayOrder;
     }
 
+    public ProductImage(String imageUrl, String cloudinaryPublicId, Boolean primaryImage, Integer displayOrder) {
+        this.imageUrl = imageUrl;
+        this.cloudinaryPublicId = cloudinaryPublicId;
+        this.primaryImage = primaryImage;
+        this.displayOrder = displayOrder;
+    }
+
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getCloudinaryPublicId() { return cloudinaryPublicId; }
+    public void setCloudinaryPublicId(String cloudinaryPublicId) { this.cloudinaryPublicId = cloudinaryPublicId; }
 
     public Boolean getPrimaryImage() { return primaryImage; }
     public void setPrimaryImage(Boolean primaryImage) { this.primaryImage = primaryImage; }

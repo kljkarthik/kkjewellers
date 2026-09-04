@@ -1,42 +1,33 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "website_settings")
+@Document(collection = "website_settings")
 public class WebsiteSettings {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String businessName;
     private String tagline;
-
-    @Column(columnDefinition = "LONGTEXT")
     private String logoUrl;
+    private String logoCloudinaryPublicId;
     private String phone;
     private String whatsappNumber;
     private String email;
-
-    @Column(length = 1000)
     private String address;
-
-    @Column(length = 2000)
     private String googleMapsUrl;
-
     private String openingHours;
     private String instagram;
     private String facebook;
     private String youtube;
-
-    @Column(length = 2000)
     private String footerDescription;
 
     public WebsiteSettings() {}
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getBusinessName() { return businessName; }
     public void setBusinessName(String businessName) { this.businessName = businessName; }
@@ -46,6 +37,9 @@ public class WebsiteSettings {
 
     public String getLogoUrl() { return logoUrl; }
     public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
+
+    public String getLogoCloudinaryPublicId() { return logoCloudinaryPublicId; }
+    public void setLogoCloudinaryPublicId(String logoCloudinaryPublicId) { this.logoCloudinaryPublicId = logoCloudinaryPublicId; }
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }

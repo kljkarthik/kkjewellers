@@ -1,39 +1,29 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "enquiries")
+@Document(collection = "enquiries")
 public class Enquiry {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_user_id")
+    @DBRef
     private CustomerUser customerUser;
 
-    @Column(nullable = false)
     private String customerName;
-
-    @Column(nullable = false)
     private String phone;
-
     private String email;
 
-    private Long productId;
+    private String productId;
     private String productName;
     private String productCode;
 
-    @Column(length = 2000, nullable = false)
     private String message;
-
     private String status; // NEW, CONTACTED, FOLLOW_UP, INTERESTED, CLOSED
-
-    @Column(length = 1000)
     private String internalNotes;
-
     private LocalDateTime createdAt;
 
     public Enquiry() {
@@ -41,7 +31,7 @@ public class Enquiry {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Enquiry(String customerName, String phone, String email, Long productId, String productName, String productCode, String message) {
+    public Enquiry(String customerName, String phone, String email, String productId, String productName, String productCode, String message) {
         this.customerName = customerName;
         this.phone = phone;
         this.email = email;
@@ -54,8 +44,8 @@ public class Enquiry {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public CustomerUser getCustomerUser() { return customerUser; }
     public void setCustomerUser(CustomerUser customerUser) { this.customerUser = customerUser; }
@@ -69,8 +59,8 @@ public class Enquiry {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public Long getProductId() { return productId; }
-    public void setProductId(Long productId) { this.productId = productId; }
+    public String getProductId() { return productId; }
+    public void setProductId(String productId) { this.productId = productId; }
 
     public String getProductName() { return productName; }
     public void setProductName(String productName) { this.productName = productName; }

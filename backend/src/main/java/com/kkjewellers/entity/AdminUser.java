@@ -1,23 +1,19 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "admins", indexes = {
-    @Index(name = "idx_admins_username", columnList = "username")
-})
+@Document(collection = "admin_users")
 public class AdminUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String username;
 
-    @Column(nullable = false)
     private String password;
-
     private String fullName;
     private String email;
     private String role;
@@ -38,8 +34,8 @@ public class AdminUser {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }

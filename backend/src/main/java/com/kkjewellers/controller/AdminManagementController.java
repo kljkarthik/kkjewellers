@@ -3,8 +3,10 @@ package com.kkjewellers.controller;
 import com.kkjewellers.dto.DashboardStatsDTO;
 import com.kkjewellers.entity.*;
 import com.kkjewellers.repository.*;
+import com.kkjewellers.service.CloudinaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ public class AdminManagementController {
     private final AppointmentRepository appointmentRepository;
     private final GalleryItemRepository galleryItemRepository;
     private final WebsiteSettingsRepository websiteSettingsRepository;
+    private final CloudinaryService cloudinaryService;
 
     public AdminManagementController(
             ProductRepository productRepository,
@@ -28,7 +31,8 @@ public class AdminManagementController {
             EnquiryRepository enquiryRepository,
             AppointmentRepository appointmentRepository,
             GalleryItemRepository galleryItemRepository,
-            WebsiteSettingsRepository websiteSettingsRepository
+            WebsiteSettingsRepository websiteSettingsRepository,
+            CloudinaryService cloudinaryService
     ) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
@@ -37,6 +41,33 @@ public class AdminManagementController {
         this.appointmentRepository = appointmentRepository;
         this.galleryItemRepository = galleryItemRepository;
         this.websiteSettingsRepository = websiteSettingsRepository;
+        this.cloudinaryService = cloudinaryService;
+    }
+
+    // --- CLOUDINARY ADMIN IMAGE UPLOAD ---
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "base64", required = false) String base64Data,
+            @RequestParam(value = "folder", defaultValue = "kk-jewellers/products") String folder
+    ) {
+        try {
+            Object uploadSource = null;
+            if (file != null && !file.isEmpty()) {
+                uploadSource = file.getBytes();
+            } else if (base64Data != null && !base64Data.trim().isEmpty()) {
+                uploadSource = base64Data;
+            }
+
+            if (uploadSource == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No image file or base64 data provided!"));
+            }
+
+            Map<String, String> uploadResult = cloudinaryService.uploadImage(uploadSource, folder);
+            return ResponseEntity.ok(uploadResult);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Image upload failed: " + e.getMessage()));
+        }
     }
 
     // --- DASHBOARD STATS ---
@@ -78,7 +109,7 @@ public class AdminManagementController {
     }
 
     @PutMapping("/products/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<?> updateProduct(@PathVariable String id, @RequestBody Product product) {
         return productRepository.findById(id).map(existing -> {
             existing.setName(product.getName());
             existing.setProductCode(product.getProductCode());
@@ -110,7 +141,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Product deleted successfully"));
@@ -121,7 +152,7 @@ public class AdminManagementController {
     // --- CATEGORIES CRUD ---
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategoriesAdmin() {
-        return ResponseEntity.ok(categoryRepository.findAllByOrderByDisplayOrderAsc());
+        return ResponseEntity.ok(categoryRepository.findByActiveTrueOrderByDisplayOrderAsc());
     }
 
     @PostMapping("/categories")
@@ -130,12 +161,13 @@ public class AdminManagementController {
     }
 
     @PutMapping("/categories/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+    public ResponseEntity<Category> updateCategory(@PathVariable String id, @RequestBody Category category) {
         return categoryRepository.findById(id).map(existing -> {
             existing.setName(category.getName());
             existing.setSlug(category.getSlug());
             existing.setDescription(category.getDescription());
-            existing.setCoverImage(category.getCoverImage());
+            existing.setImageUrl(category.getImageUrl());
+            existing.setCloudinaryPublicId(category.getCloudinaryPublicId());
             existing.setDisplayOrder(category.getDisplayOrder());
             existing.setActive(category.getActive());
             return ResponseEntity.ok(categoryRepository.save(existing));
@@ -143,7 +175,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable String id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Category deleted successfully"));
@@ -154,7 +186,7 @@ public class AdminManagementController {
     // --- COLLECTIONS CRUD ---
     @GetMapping("/collections")
     public ResponseEntity<List<CollectionEntity>> getAllCollectionsAdmin() {
-        return ResponseEntity.ok(collectionRepository.findAllByOrderByDisplayOrderAsc());
+        return ResponseEntity.ok(collectionRepository.findByActiveTrueOrderByDisplayOrderAsc());
     }
 
     @PostMapping("/collections")
@@ -163,12 +195,13 @@ public class AdminManagementController {
     }
 
     @PutMapping("/collections/{id}")
-    public ResponseEntity<CollectionEntity> updateCollection(@PathVariable Long id, @RequestBody CollectionEntity collection) {
+    public ResponseEntity<CollectionEntity> updateCollection(@PathVariable String id, @RequestBody CollectionEntity collection) {
         return collectionRepository.findById(id).map(existing -> {
             existing.setName(collection.getName());
             existing.setSlug(collection.getSlug());
             existing.setDescription(collection.getDescription());
-            existing.setCoverImage(collection.getCoverImage());
+            existing.setImageUrl(collection.getImageUrl());
+            existing.setCloudinaryPublicId(collection.getCloudinaryPublicId());
             existing.setFeatured(collection.getFeatured());
             existing.setDisplayOrder(collection.getDisplayOrder());
             existing.setActive(collection.getActive());
@@ -177,7 +210,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/collections/{id}")
-    public ResponseEntity<?> deleteCollection(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCollection(@PathVariable String id) {
         if (collectionRepository.existsById(id)) {
             collectionRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Collection deleted successfully"));
@@ -192,7 +225,7 @@ public class AdminManagementController {
     }
 
     @PutMapping("/enquiries/{id}")
-    public ResponseEntity<?> updateEnquiryStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<?> updateEnquiryStatus(@PathVariable String id, @RequestBody Map<String, String> body) {
         return enquiryRepository.findById(id).map(enquiry -> {
             if (body.containsKey("status")) enquiry.setStatus(body.get("status"));
             if (body.containsKey("internalNotes")) enquiry.setInternalNotes(body.get("internalNotes"));
@@ -201,7 +234,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/enquiries/{id}")
-    public ResponseEntity<?> deleteEnquiry(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEnquiry(@PathVariable String id) {
         if (enquiryRepository.existsById(id)) {
             enquiryRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Enquiry deleted"));
@@ -212,11 +245,11 @@ public class AdminManagementController {
     // --- APPOINTMENTS MANAGEMENT ---
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> getAppointments() {
-        return ResponseEntity.ok(appointmentRepository.findAllByOrderByPreferredDateAscCreatedAtDesc());
+        return ResponseEntity.ok(appointmentRepository.findAllByOrderByCreatedAtDesc());
     }
 
     @PutMapping("/appointments/{id}")
-    public ResponseEntity<?> updateAppointmentStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<?> updateAppointmentStatus(@PathVariable String id, @RequestBody Map<String, String> body) {
         return appointmentRepository.findById(id).map(appointment -> {
             if (body.containsKey("status")) appointment.setStatus(body.get("status"));
             return ResponseEntity.ok(appointmentRepository.save(appointment));
@@ -224,7 +257,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<?> deleteAppointment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteAppointment(@PathVariable String id) {
         if (appointmentRepository.existsById(id)) {
             appointmentRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Appointment deleted"));
@@ -235,7 +268,7 @@ public class AdminManagementController {
     // --- GALLERY CRUD ---
     @GetMapping("/gallery")
     public ResponseEntity<List<GalleryItem>> getAdminGallery() {
-        return ResponseEntity.ok(galleryItemRepository.findAllByOrderByDisplayOrderAsc());
+        return ResponseEntity.ok(galleryItemRepository.findByActiveTrueOrderByDisplayOrderAsc());
     }
 
     @PostMapping("/gallery")
@@ -244,11 +277,12 @@ public class AdminManagementController {
     }
 
     @PutMapping("/gallery/{id}")
-    public ResponseEntity<GalleryItem> updateGalleryItem(@PathVariable Long id, @RequestBody GalleryItem item) {
+    public ResponseEntity<GalleryItem> updateGalleryItem(@PathVariable String id, @RequestBody GalleryItem item) {
         return galleryItemRepository.findById(id).map(existing -> {
             existing.setTitle(item.getTitle());
             existing.setCategory(item.getCategory());
             existing.setImageUrl(item.getImageUrl());
+            existing.setCloudinaryPublicId(item.getCloudinaryPublicId());
             existing.setDisplayOrder(item.getDisplayOrder());
             existing.setActive(item.getActive());
             return ResponseEntity.ok(galleryItemRepository.save(existing));
@@ -256,7 +290,7 @@ public class AdminManagementController {
     }
 
     @DeleteMapping("/gallery/{id}")
-    public ResponseEntity<?> deleteGalleryItem(@PathVariable Long id) {
+    public ResponseEntity<?> deleteGalleryItem(@PathVariable String id) {
         if (galleryItemRepository.existsById(id)) {
             galleryItemRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Gallery item deleted"));
@@ -280,6 +314,7 @@ public class AdminManagementController {
         current.setBusinessName(settings.getBusinessName());
         current.setTagline(settings.getTagline());
         current.setLogoUrl(settings.getLogoUrl());
+        current.setLogoCloudinaryPublicId(settings.getLogoCloudinaryPublicId());
         current.setPhone(settings.getPhone());
         current.setWhatsappNumber(settings.getWhatsappNumber());
         current.setEmail(settings.getEmail());

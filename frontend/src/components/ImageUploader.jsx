@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Upload, X, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import { Upload, X, Loader2 } from 'lucide-react';
+import api from '../services/api';
 
-const ImageUploader = ({ value, onChange, label = "Upload Photo", className = "" }) => {
+const ImageUploader = ({ value, onChange, label = "Upload Photo", className = "", folder = "kk-jewellers/products" }) => {
   const [dragActive, setDragActive] = useState(false);
-  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -12,12 +13,36 @@ const ImageUploader = ({ value, onChange, label = "Upload Photo", className = ""
     }
   };
 
-  const processFile = (file) => {
+  const processFile = async (file) => {
     if (!file.type.startsWith('image/')) {
       alert('Please upload a valid image file (JPG, PNG, WEBP, etc.)');
       return;
     }
 
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', folder);
+
+      const response = await api.post('/admin/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      if (response.data?.imageUrl) {
+        onChange(response.data.imageUrl);
+      } else {
+        fallbackBase64(file);
+      }
+    } catch (err) {
+      console.warn("Backend Cloudinary upload failed, falling back to data URL:", err);
+      fallbackBase64(file);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const fallbackBase64 = (file) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       if (event.target?.result) {
@@ -88,41 +113,21 @@ const ImageUploader = ({ value, onChange, label = "Upload Photo", className = ""
             accept="image/*"
             id={inputId}
             onChange={handleFileChange}
+            disabled={uploading}
             className="hidden"
           />
           <label htmlFor={inputId} className="cursor-pointer block space-y-2">
             <div className="w-10 h-10 rounded-full bg-obsidian-900 border border-gold-500/40 flex items-center justify-center mx-auto text-gold-400">
-              <Upload className="w-5 h-5" />
+              {uploading ? <Loader2 className="w-5 h-5 animate-spin text-gold-400" /> : <Upload className="w-5 h-5" />}
             </div>
             <p className="text-pearl-100 font-bold text-xs uppercase tracking-wider">
-              Click to Choose Photo or Drag & Drop
+              {uploading ? "Uploading to Cloudinary..." : "Click to Choose Photo or Drag & Drop"}
             </p>
             <p className="text-[10px] text-pearl-300">
-              Supports JPG, PNG, WEBP, GIF (High Quality)
+              Supports JPG, PNG, WEBP up to 10MB
             </p>
           </label>
         </div>
-      )}
-
-      {/* Optional Toggle to enter URL manually */}
-      <div className="flex items-center justify-between text-[10px] text-pearl-300 pt-1">
-        <button
-          type="button"
-          onClick={() => setShowUrlInput(!showUrlInput)}
-          className="text-gold-400 hover:underline flex items-center gap-1"
-        >
-          <LinkIcon className="w-3 h-3" /> {showUrlInput ? "Hide Direct URL Field" : "Enter Image Web URL manually"}
-        </button>
-      </div>
-
-      {showUrlInput && (
-        <input
-          type="text"
-          placeholder="https://example.com/photo.jpg"
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full p-2.5 bg-obsidian-950 border border-gold-500/30 text-pearl-100 text-xs font-mono"
-        />
       )}
     </div>
   );

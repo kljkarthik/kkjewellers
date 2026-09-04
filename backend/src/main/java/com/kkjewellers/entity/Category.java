@@ -1,25 +1,18 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "categories")
+@Document(collection = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false, unique = true)
     private String slug;
-
-    @Column(length = 1000)
     private String description;
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String coverImage;
+    private String imageUrl;
+    private String cloudinaryPublicId;
     private Integer displayOrder;
     private Boolean active;
 
@@ -28,18 +21,18 @@ public class Category {
         this.displayOrder = 0;
     }
 
-    public Category(String name, String slug, String description, String coverImage, Integer displayOrder) {
+    public Category(String name, String slug, String description, String imageUrl, Integer displayOrder) {
         this.name = name;
         this.slug = slug;
         this.description = description;
-        this.coverImage = coverImage;
+        this.imageUrl = imageUrl;
         this.displayOrder = displayOrder;
         this.active = true;
     }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // Getters and Setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -50,8 +43,11 @@ public class Category {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getCoverImage() { return coverImage; }
-    public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getCloudinaryPublicId() { return cloudinaryPublicId; }
+    public void setCloudinaryPublicId(String cloudinaryPublicId) { this.cloudinaryPublicId = cloudinaryPublicId; }
 
     public Integer getDisplayOrder() { return displayOrder; }
     public void setDisplayOrder(Integer displayOrder) { this.displayOrder = displayOrder; }

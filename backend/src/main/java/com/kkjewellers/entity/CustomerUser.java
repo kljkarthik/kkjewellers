@@ -1,53 +1,37 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "customer_users")
+@Document(collection = "customer_users")
 public class CustomerUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String firstName;
-
-    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String mobile;
 
-    @Column(nullable = false)
     private String passwordHash;
-
     private String dateOfBirth;
-
     private String preferredCategory;
-
-    @Column(nullable = false)
     private String status = "ACTIVE"; // ACTIVE, INACTIVE
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
+    public CustomerUser() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public CustomerUser() {}
 
     public CustomerUser(String firstName, String lastName, String email, String mobile, String passwordHash) {
         this.firstName = firstName;
@@ -55,11 +39,13 @@ public class CustomerUser {
         this.email = email;
         this.mobile = mobile;
         this.passwordHash = passwordHash;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }

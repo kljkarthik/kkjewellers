@@ -75,7 +75,7 @@ public class PublicCatalogueController {
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
         return productRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

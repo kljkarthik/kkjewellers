@@ -1,7 +1,7 @@
 package com.kkjewellers.repository;
 
 import com.kkjewellers.entity.ProductImage;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
+public interface ProductImageRepository extends MongoRepository<ProductImage, String> {
 }

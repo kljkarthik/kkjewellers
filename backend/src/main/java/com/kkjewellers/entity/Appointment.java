@@ -1,41 +1,29 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "appointments")
+@Document(collection = "appointments")
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_user_id")
+    @DBRef
     private CustomerUser customerUser;
 
-    @Column(nullable = false)
     private String customerName;
-
-    @Column(nullable = false)
     private String phone;
-
     private String email;
 
-    @Column(nullable = false)
     private LocalDate preferredDate;
-
-    @Column(nullable = false)
     private String preferredTime; // e.g. "11:00 AM", "03:30 PM"
-
     private String collectionName;
-
-    @Column(length = 1000)
     private String message;
-
     private String status; // PENDING, CONFIRMED, COMPLETED, CANCELLED
-
     private LocalDateTime createdAt;
 
     public Appointment() {
@@ -56,8 +44,8 @@ public class Appointment {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public CustomerUser getCustomerUser() { return customerUser; }
     public void setCustomerUser(CustomerUser customerUser) { this.customerUser = customerUser; }

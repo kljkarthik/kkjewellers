@@ -1,42 +1,36 @@
 package com.kkjewellers.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "saved_collection_items", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"customer_user_id", "collection_id"})
-})
+@Document(collection = "saved_collection_items")
 public class SavedCollectionItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_user_id", nullable = false)
+    @DBRef
     private CustomerUser customerUser;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "collection_id", nullable = false)
+    @DBRef
     private CollectionEntity collection;
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
+    public SavedCollectionItem() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public SavedCollectionItem() {}
 
     public SavedCollectionItem(CustomerUser customerUser, CollectionEntity collection) {
         this.customerUser = customerUser;
         this.collection = collection;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public CustomerUser getCustomerUser() { return customerUser; }
     public void setCustomerUser(CustomerUser customerUser) { this.customerUser = customerUser; }

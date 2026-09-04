@@ -2,17 +2,20 @@ package com.kkjewellers.service;
 
 import com.kkjewellers.entity.*;
 import com.kkjewellers.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SeedDataService implements CommandLineRunner {
+
+    private static final Logger logger = LoggerFactory.getLogger(SeedDataService.class);
 
     private final AdminUserRepository adminUserRepository;
     private final CategoryRepository categoryRepository;
@@ -23,6 +26,7 @@ public class SeedDataService implements CommandLineRunner {
     private final EnquiryRepository enquiryRepository;
     private final AppointmentRepository appointmentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CloudinaryService cloudinaryService;
 
     public SeedDataService(
             AdminUserRepository adminUserRepository,
@@ -33,7 +37,8 @@ public class SeedDataService implements CommandLineRunner {
             WebsiteSettingsRepository websiteSettingsRepository,
             EnquiryRepository enquiryRepository,
             AppointmentRepository appointmentRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            CloudinaryService cloudinaryService
     ) {
         this.adminUserRepository = adminUserRepository;
         this.categoryRepository = categoryRepository;
@@ -44,15 +49,18 @@ public class SeedDataService implements CommandLineRunner {
         this.enquiryRepository = enquiryRepository;
         this.appointmentRepository = appointmentRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
-    @Transactional
     public void run(String... args) {
+        logger.info("Initializing MongoDB Seed Data & Cloudinary Verification...");
         seedWebsiteSettings();
         seedAdminUser();
         if (categoryRepository.count() == 0) {
             seedCatalogueData();
+        } else {
+            migrateExistingImagesToCloudinary();
         }
         if (galleryItemRepository.count() == 0) {
             seedGallery();
@@ -60,6 +68,7 @@ public class SeedDataService implements CommandLineRunner {
         if (enquiryRepository.count() == 0) {
             seedEnquiriesAndAppointments();
         }
+        logger.info("MongoDB & Cloudinary Migration and Seeding Complete!");
     }
 
     private void seedWebsiteSettings() {
@@ -67,7 +76,12 @@ public class SeedDataService implements CommandLineRunner {
             WebsiteSettings s = new WebsiteSettings();
             s.setBusinessName("KK JEWELLERS");
             s.setTagline("Timeless Elegance. Crafted for Generations.");
-            s.setLogoUrl("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&q=80");
+            
+            String logoRaw = "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&q=80";
+            Map<String, String> logoUpload = cloudinaryService.uploadRemoteUrl(logoRaw, "kk-jewellers/branding");
+            s.setLogoUrl(logoUpload.get("imageUrl"));
+            s.setLogoCloudinaryPublicId(logoUpload.get("publicId"));
+
             s.setPhone("+91 9440156446");
             s.setWhatsappNumber("919440156446");
             s.setEmail("enquiry@kkjewellers.com");
@@ -91,24 +105,24 @@ public class SeedDataService implements CommandLineRunner {
 
     private void seedCatalogueData() {
         // Create Categories
-        Category catGold = categoryRepository.save(new Category("Gold Jewellery", "gold-jewellery", "Pure 22K & 18K handcrafted gold jewellery", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80", 1));
-        Category catDiamond = categoryRepository.save(new Category("Diamond Jewellery", "diamond-jewellery", "Certified VVS-EF solitaire & diamond studded jewellery", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80", 2));
-        Category catBridal = categoryRepository.save(new Category("Bridal Jewellery", "bridal-jewellery", "Opulent royal bridal neckwear, harams, and matha patti", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 3));
-        Category catRings = categoryRepository.save(new Category("Rings", "rings", "Statement rings, solitaires, and royal gold bands", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80", 4));
-        Category catNecklaces = categoryRepository.save(new Category("Necklaces", "necklaces", "Chokers, collar necklaces, and traditional harams", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80", 5));
-        Category catEarrings = categoryRepository.save(new Category("Earrings", "earrings", "Classic Jhumkas, Chandbalis, studs, and drops", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800&q=80", 6));
-        Category catBangles = categoryRepository.save(new Category("Bangles", "bangles", "Kadas, broad Nakshi bangles, and diamond bracelets", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 7));
-        Category catChains = categoryRepository.save(new Category("Chains", "chains", "Handcrafted solid gold chains and sleek designs", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80", 8));
-        Category catBracelets = categoryRepository.save(new Category("Bracelets", "bracelets", "Luxury tennis bracelets and gold cuffs", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80", 9));
-        Category catMens = categoryRepository.save(new Category("Men's Jewellery", "mens-jewellery", "Sophisticated signet rings, gold kadas, and chains", "https://images.unsplash.com/photo-1622434641406-a158123450f9?w=800&q=80", 10));
-        Category catKids = categoryRepository.save(new Category("Kids Jewellery", "kids-jewellery", "Lightweight hypoallergenic gold bangles & nazariya", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 11));
+        Category catGold = createCategory("Gold Jewellery", "gold-jewellery", "Pure 22K & 18K handcrafted gold jewellery", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80", 1);
+        Category catDiamond = createCategory("Diamond Jewellery", "diamond-jewellery", "Certified VVS-EF solitaire & diamond studded jewellery", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80", 2);
+        Category catBridal = createCategory("Bridal Jewellery", "bridal-jewellery", "Opulent royal bridal neckwear, harams, and matha patti", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 3);
+        Category catRings = createCategory("Rings", "rings", "Statement rings, solitaires, and royal gold bands", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80", 4);
+        Category catNecklaces = createCategory("Necklaces", "necklaces", "Chokers, collar necklaces, and traditional harams", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80", 5);
+        Category catEarrings = createCategory("Earrings", "earrings", "Classic Jhumkas, Chandbalis, studs, and drops", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800&q=80", 6);
+        Category catBangles = createCategory("Bangles", "bangles", "Kadas, broad Nakshi bangles, and diamond bracelets", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 7);
+        Category catChains = createCategory("Chains", "chains", "Handcrafted solid gold chains and sleek designs", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80", 8);
+        Category catBracelets = createCategory("Bracelets", "bracelets", "Luxury tennis bracelets and gold cuffs", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80", 9);
+        Category catMens = createCategory("Men's Jewellery", "mens-jewellery", "Sophisticated signet rings, gold kadas, and chains", "https://images.unsplash.com/photo-1622434641406-a158123450f9?w=800&q=80", 10);
+        Category catKids = createCategory("Kids Jewellery", "kids-jewellery", "Lightweight hypoallergenic gold bangles & nazariya", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80", 11);
 
         // Create Collections
-        CollectionEntity colBridal = collectionRepository.save(new CollectionEntity("Bridal Collection", "bridal-collection", "Grand heritage sets crafted for royal Indian weddings.", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1000&q=80", true, 1));
-        CollectionEntity colTraditional = collectionRepository.save(new CollectionEntity("Traditional Collection", "traditional-collection", "Intricate Temple & Antique Kundan craftsmanship.", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80", true, 2));
-        CollectionEntity colContemporary = collectionRepository.save(new CollectionEntity("Contemporary Collection", "contemporary-collection", "Modern diamond cuts and minimalist high-fashion gold.", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", true, 3));
-        CollectionEntity colFestival = collectionRepository.save(new CollectionEntity("Festival Collection", "festival-collection", "Festive glitter for Diwali, Dhanteras, and family celebrations.", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=1000&q=80", false, 4));
-        CollectionEntity colDailyWear = collectionRepository.save(new CollectionEntity("Daily Wear Collection", "daily-wear-collection", "Lightweight, durable, and comfortable gold & diamond elegance.", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", false, 5));
+        CollectionEntity colBridal = createCollection("Bridal Collection", "bridal-collection", "Grand heritage sets crafted for royal Indian weddings.", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1000&q=80", true, 1);
+        CollectionEntity colTraditional = createCollection("Traditional Collection", "traditional-collection", "Intricate Temple & Antique Kundan craftsmanship.", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80", true, 2);
+        CollectionEntity colContemporary = createCollection("Contemporary Collection", "contemporary-collection", "Modern diamond cuts and minimalist high-fashion gold.", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", true, 3);
+        CollectionEntity colFestival = createCollection("Festival Collection", "festival-collection", "Festive glitter for Diwali, Dhanteras, and family celebrations.", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=1000&q=80", false, 4);
+        CollectionEntity colDailyWear = createCollection("Daily Wear Collection", "daily-wear-collection", "Lightweight, durable, and comfortable gold & diamond elegance.", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", false, 5);
 
         // Seed Products
         createProduct("The Royal Kundan Heritage Choker", "KK-NK-001", catNecklaces, colBridal, "Gold", "22K", "68.4 gms", "Women", "Wedding",
@@ -212,6 +226,20 @@ public class SeedDataService implements CommandLineRunner {
                 ));
     }
 
+    private Category createCategory(String name, String slug, String description, String rawImageUrl, Integer order) {
+        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/categories");
+        Category cat = new Category(name, slug, description, upload.get("imageUrl"), order);
+        cat.setCloudinaryPublicId(upload.get("publicId"));
+        return categoryRepository.save(cat);
+    }
+
+    private CollectionEntity createCollection(String name, String slug, String description, String rawImageUrl, Boolean featured, Integer order) {
+        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/collections");
+        CollectionEntity col = new CollectionEntity(name, slug, description, upload.get("imageUrl"), featured, order);
+        col.setCloudinaryPublicId(upload.get("publicId"));
+        return collectionRepository.save(col);
+    }
+
     private void createProduct(
             String name, String code, Category cat, CollectionEntity col,
             String material, String purity, String weight, String gender, String occasion,
@@ -234,8 +262,9 @@ public class SeedDataService implements CommandLineRunner {
         p.setActive(true);
 
         int order = 0;
-        for (String url : imageUrls) {
-            ProductImage img = new ProductImage(url, order == 0, order++);
+        for (String rawUrl : imageUrls) {
+            Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawUrl, "kk-jewellers/products");
+            ProductImage img = new ProductImage(upload.get("imageUrl"), upload.get("publicId"), order == 0, order++);
             p.addImage(img);
         }
 
@@ -243,20 +272,27 @@ public class SeedDataService implements CommandLineRunner {
     }
 
     private void seedGallery() {
-        galleryItemRepository.save(new GalleryItem("Royal Kundan Suite", "Jewellery", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80", 1));
-        galleryItemRepository.save(new GalleryItem("Bridal Sanctuary Lounge", "Showroom", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1000&q=80", 2));
-        galleryItemRepository.save(new GalleryItem("Solitaire Diamond Exhibition", "Events", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", 3));
-        galleryItemRepository.save(new GalleryItem("Heritage Bride Couture", "Bridal", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1000&q=80", 4));
-        galleryItemRepository.save(new GalleryItem("Master Artisan Workshop", "Showroom", "https://images.unsplash.com/photo-1622434641406-a158123450f9?w=1000&q=80", 5));
-        galleryItemRepository.save(new GalleryItem("Festival Gold Showcase", "Collections", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=1000&q=80", 6));
+        createGalleryItem("Royal Kundan Suite", "Jewellery", "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80", 1);
+        createGalleryItem("Bridal Sanctuary Lounge", "Showroom", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1000&q=80", 2);
+        createGalleryItem("Solitaire Diamond Exhibition", "Events", "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&q=80", 3);
+        createGalleryItem("Heritage Bride Couture", "Bridal", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1000&q=80", 4);
+        createGalleryItem("Master Artisan Workshop", "Showroom", "https://images.unsplash.com/photo-1622434641406-a158123450f9?w=1000&q=80", 5);
+        createGalleryItem("Festival Gold Showcase", "Collections", "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=1000&q=80", 6);
+    }
+
+    private void createGalleryItem(String title, String category, String rawUrl, Integer order) {
+        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawUrl, "kk-jewellers/gallery");
+        GalleryItem item = new GalleryItem(title, category, upload.get("imageUrl"), order);
+        item.setCloudinaryPublicId(upload.get("publicId"));
+        galleryItemRepository.save(item);
     }
 
     private void seedEnquiriesAndAppointments() {
-        Enquiry e1 = new Enquiry("Sujata Rao", "+91 98490 12345", "sujata.rao@gmail.com", 1L, "The Royal Kundan Heritage Choker", "KK-NK-001", "I would like to inquire about the customization options for matching Jhumkas for this choker.");
+        Enquiry e1 = new Enquiry("Sujata Rao", "+91 98490 12345", "sujata.rao@gmail.com", "1", "The Royal Kundan Heritage Choker", "KK-NK-001", "I would like to inquire about the customization options for matching Jhumkas for this choker.");
         e1.setStatus("NEW");
         enquiryRepository.save(e1);
 
-        Enquiry e2 = new Enquiry("Vikram Verma", "+91 97110 56789", "vikram.verma@hotmail.com", 2L, "Elysian Solitaire Diamond Ring", "KK-RN-002", "Interested in checking the ring size availability and GIA diamond certificate.");
+        Enquiry e2 = new Enquiry("Vikram Verma", "+91 97110 56789", "vikram.verma@hotmail.com", "2", "Elysian Solitaire Diamond Ring", "KK-RN-002", "Interested in checking the ring size availability and GIA diamond certificate.");
         e2.setStatus("CONTACTED");
         e2.setInternalNotes("Called customer on Aug 20. Sent digital certificate PDF on WhatsApp.");
         enquiryRepository.save(e2);
@@ -264,5 +300,26 @@ public class SeedDataService implements CommandLineRunner {
         Appointment a1 = new Appointment("Ananya Reddy", "+91 99887 65432", "ananya.r@yahoo.com", LocalDate.now().plusDays(2), "03:00 PM", "Bridal Collection", "We would like a private consultation for a complete wedding jewellery package.");
         a1.setStatus("CONFIRMED");
         appointmentRepository.save(a1);
+    }
+
+    private void migrateExistingImagesToCloudinary() {
+        logger.info("Verifying existing product images for Cloudinary hosting...");
+        List<Product> products = productRepository.findAll();
+        for (Product p : products) {
+            boolean updated = false;
+            if (p.getImages() != null) {
+                for (ProductImage img : p.getImages()) {
+                    if (img.getImageUrl() != null && !img.getImageUrl().contains("cloudinary.com")) {
+                        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(img.getImageUrl(), "kk-jewellers/products");
+                        img.setImageUrl(upload.get("imageUrl"));
+                        img.setCloudinaryPublicId(upload.get("publicId"));
+                        updated = true;
+                    }
+                }
+            }
+            if (updated) {
+                productRepository.save(p);
+            }
+        }
     }
 }

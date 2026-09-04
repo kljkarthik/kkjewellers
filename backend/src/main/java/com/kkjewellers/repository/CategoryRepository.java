@@ -1,12 +1,12 @@
 package com.kkjewellers.repository;
 
 import com.kkjewellers.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends MongoRepository<Category, String> {
     Optional<Category> findBySlug(String slug);
     List<Category> findByActiveTrueOrderByDisplayOrderAsc();
-    List<Category> findAllByOrderByDisplayOrderAsc();
 }

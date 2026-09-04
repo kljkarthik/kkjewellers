@@ -5,7 +5,6 @@ import com.kkjewellers.entity.*;
 import com.kkjewellers.repository.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class CustomerPortalController {
 
     // PROFILE
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@RequestParam(required = false) Long customerId) {
+    public ResponseEntity<?> getProfile(@RequestParam(required = false) String customerId) {
         CustomerUser customer = getAuthenticatedCustomer();
         if (customer == null && customerId != null) {
             customer = customerUserRepository.findById(customerId).orElse(null);
@@ -87,13 +86,13 @@ public class CustomerPortalController {
 
     // WISHLIST
     @GetMapping("/wishlist")
-    public ResponseEntity<?> getWishlist(@RequestParam Long customerId) {
+    public ResponseEntity<?> getWishlist(@RequestParam String customerId) {
         List<WishlistItem> items = wishlistItemRepository.findByCustomerUserIdOrderByCreatedAtDesc(customerId);
         return ResponseEntity.ok(items);
     }
 
     @PostMapping("/wishlist/{productId}")
-    public ResponseEntity<?> toggleWishlist(@PathVariable Long productId, @RequestParam Long customerId) {
+    public ResponseEntity<?> toggleWishlist(@PathVariable String productId, @RequestParam String customerId) {
         Optional<CustomerUser> customerOpt = customerUserRepository.findById(customerId);
         Optional<Product> productOpt = productRepository.findById(productId);
 
@@ -118,13 +117,13 @@ public class CustomerPortalController {
 
     // SAVED COLLECTIONS
     @GetMapping("/collections")
-    public ResponseEntity<?> getSavedCollections(@RequestParam Long customerId) {
+    public ResponseEntity<?> getSavedCollections(@RequestParam String customerId) {
         List<SavedCollectionItem> collections = savedCollectionItemRepository.findByCustomerUserIdOrderByCreatedAtDesc(customerId);
         return ResponseEntity.ok(collections);
     }
 
     @PostMapping("/collections/{collectionId}")
-    public ResponseEntity<?> toggleSavedCollection(@PathVariable Long collectionId, @RequestParam Long customerId) {
+    public ResponseEntity<?> toggleSavedCollection(@PathVariable String collectionId, @RequestParam String customerId) {
         Optional<CustomerUser> customerOpt = customerUserRepository.findById(customerId);
         Optional<CollectionEntity> colOpt = collectionRepository.findById(collectionId);
 
@@ -146,15 +145,14 @@ public class CustomerPortalController {
 
     // ENQUIRIES
     @GetMapping("/enquiries")
-    public ResponseEntity<?> getCustomerEnquiries(@RequestParam Long customerId) {
+    public ResponseEntity<?> getCustomerEnquiries(@RequestParam String customerId) {
         List<Enquiry> enquiries = enquiryRepository.findByCustomerUserIdOrderByCreatedAtDesc(customerId);
-        // Exclude internal notes for customer view
         enquiries.forEach(e -> e.setInternalNotes(null));
         return ResponseEntity.ok(enquiries);
     }
 
     @PostMapping("/enquiries")
-    public ResponseEntity<?> createCustomerEnquiry(@RequestBody Enquiry enquiry, @RequestParam(required = false) Long customerId) {
+    public ResponseEntity<?> createCustomerEnquiry(@RequestBody Enquiry enquiry, @RequestParam(required = false) String customerId) {
         if (customerId != null) {
             customerUserRepository.findById(customerId).ifPresent(enquiry::setCustomerUser);
         }
@@ -164,13 +162,13 @@ public class CustomerPortalController {
 
     // APPOINTMENTS
     @GetMapping("/appointments")
-    public ResponseEntity<?> getCustomerAppointments(@RequestParam Long customerId) {
-        List<Appointment> appointments = appointmentRepository.findByCustomerUserIdOrderByPreferredDateAscCreatedAtDesc(customerId);
+    public ResponseEntity<?> getCustomerAppointments(@RequestParam String customerId) {
+        List<Appointment> appointments = appointmentRepository.findByCustomerUserIdOrderByCreatedAtDesc(customerId);
         return ResponseEntity.ok(appointments);
     }
 
     @PostMapping("/appointments")
-    public ResponseEntity<?> createCustomerAppointment(@RequestBody Appointment appointment, @RequestParam(required = false) Long customerId) {
+    public ResponseEntity<?> createCustomerAppointment(@RequestBody Appointment appointment, @RequestParam(required = false) String customerId) {
         if (customerId != null) {
             customerUserRepository.findById(customerId).ifPresent(appointment::setCustomerUser);
         }
@@ -179,7 +177,7 @@ public class CustomerPortalController {
     }
 
     @PutMapping("/appointments/{id}/cancel")
-    public ResponseEntity<?> cancelAppointment(@PathVariable Long id, @RequestParam Long customerId) {
+    public ResponseEntity<?> cancelAppointment(@PathVariable String id, @RequestParam String customerId) {
         Optional<Appointment> appOpt = appointmentRepository.findById(id);
         if (appOpt.isPresent()) {
             Appointment app = appOpt.get();
@@ -192,13 +190,13 @@ public class CustomerPortalController {
 
     // NOTIFICATIONS
     @GetMapping("/notifications")
-    public ResponseEntity<?> getCustomerNotifications(@RequestParam Long customerId) {
+    public ResponseEntity<?> getCustomerNotifications(@RequestParam String customerId) {
         List<CustomerNotification> notifications = customerNotificationRepository.findByCustomerUserIdOrderByCreatedAtDesc(customerId);
         return ResponseEntity.ok(notifications);
     }
 
     @PutMapping("/notifications/{id}/read")
-    public ResponseEntity<?> markNotificationRead(@PathVariable Long id) {
+    public ResponseEntity<?> markNotificationRead(@PathVariable String id) {
         customerNotificationRepository.findById(id).ifPresent(n -> {
             n.setRead(true);
             customerNotificationRepository.save(n);

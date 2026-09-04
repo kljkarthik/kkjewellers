@@ -57,7 +57,7 @@ public class CustomerDTOs {
 
     public static class CustomerAuthResponse {
         private String token;
-        private Long id;
+        private String id;
         private String firstName;
         private String lastName;
         private String email;
@@ -65,7 +65,7 @@ public class CustomerDTOs {
         private String dateOfBirth;
         private String preferredCategory;
 
-        public CustomerAuthResponse(String token, Long id, String firstName, String lastName, String email, String mobile, String dateOfBirth, String preferredCategory) {
+        public CustomerAuthResponse(String token, String id, String firstName, String lastName, String email, String mobile, String dateOfBirth, String preferredCategory) {
             this.token = token;
             this.id = id;
             this.firstName = firstName;
@@ -77,7 +77,7 @@ public class CustomerDTOs {
         }
 
         public String getToken() { return token; }
-        public Long getId() { return id; }
+        public String getId() { return id; }
         public String getFirstName() { return firstName; }
         public String getLastName() { return lastName; }
         public String getEmail() { return email; }
