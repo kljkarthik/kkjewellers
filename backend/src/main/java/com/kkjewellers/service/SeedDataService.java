@@ -58,7 +58,7 @@ public class SeedDataService implements CommandLineRunner {
         try {
             seedWebsiteSettings();
             seedAdminUser();
-            if (categoryRepository.count() == 0) {
+            if (categoryRepository.count() == 0 || productRepository.count() == 0) {
                 seedCatalogueData();
             } else {
                 migrateExistingImagesToCloudinary();
@@ -231,17 +231,21 @@ public class SeedDataService implements CommandLineRunner {
     }
 
     private Category createCategory(String name, String slug, String description, String rawImageUrl, Integer order) {
-        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/categories");
-        Category cat = new Category(name, slug, description, upload.get("imageUrl"), order);
-        cat.setCloudinaryPublicId(upload.get("publicId"));
-        return categoryRepository.save(cat);
+        return categoryRepository.findBySlug(slug).orElseGet(() -> {
+            Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/categories");
+            Category cat = new Category(name, slug, description, upload.get("imageUrl"), order);
+            cat.setCloudinaryPublicId(upload.get("publicId"));
+            return categoryRepository.save(cat);
+        });
     }
 
     private CollectionEntity createCollection(String name, String slug, String description, String rawImageUrl, Boolean featured, Integer order) {
-        Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/collections");
-        CollectionEntity col = new CollectionEntity(name, slug, description, upload.get("imageUrl"), featured, order);
-        col.setCloudinaryPublicId(upload.get("publicId"));
-        return collectionRepository.save(col);
+        return collectionRepository.findBySlug(slug).orElseGet(() -> {
+            Map<String, String> upload = cloudinaryService.uploadRemoteUrl(rawImageUrl, "kk-jewellers/collections");
+            CollectionEntity col = new CollectionEntity(name, slug, description, upload.get("imageUrl"), featured, order);
+            col.setCloudinaryPublicId(upload.get("publicId"));
+            return collectionRepository.save(col);
+        });
     }
 
     private void createProduct(
@@ -249,6 +253,9 @@ public class SeedDataService implements CommandLineRunner {
             String material, String purity, String weight, String gender, String occasion,
             String shortDesc, String fullDesc, boolean featured, boolean newArrival, List<String> imageUrls
     ) {
+        if (productRepository.findByProductCode(code).isPresent()) {
+            return;
+        }
         Product p = new Product();
         p.setName(name);
         p.setProductCode(code);
