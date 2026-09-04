@@ -55,20 +55,24 @@ public class SeedDataService implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("Initializing MongoDB Seed Data & Cloudinary Verification...");
-        seedWebsiteSettings();
-        seedAdminUser();
-        if (categoryRepository.count() == 0) {
-            seedCatalogueData();
-        } else {
-            migrateExistingImagesToCloudinary();
+        try {
+            seedWebsiteSettings();
+            seedAdminUser();
+            if (categoryRepository.count() == 0) {
+                seedCatalogueData();
+            } else {
+                migrateExistingImagesToCloudinary();
+            }
+            if (galleryItemRepository.count() == 0) {
+                seedGallery();
+            }
+            if (enquiryRepository.count() == 0) {
+                seedEnquiriesAndAppointments();
+            }
+            logger.info("MongoDB & Cloudinary Migration and Seeding Complete!");
+        } catch (Exception e) {
+            logger.error("MongoDB seed data initialization or Cloudinary verification failed during startup: {}", e.getMessage(), e);
         }
-        if (galleryItemRepository.count() == 0) {
-            seedGallery();
-        }
-        if (enquiryRepository.count() == 0) {
-            seedEnquiriesAndAppointments();
-        }
-        logger.info("MongoDB & Cloudinary Migration and Seeding Complete!");
     }
 
     private void seedWebsiteSettings() {
