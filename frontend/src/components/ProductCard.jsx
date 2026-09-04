@@ -3,26 +3,58 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
 
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+
 const ProductCard = ({ product, priority = false }) => {
-  const primaryImage = product.primaryImageUrl 
-    || product.images?.find(i => i.primaryImage)?.imageUrl 
-    || product.images?.[0]?.imageUrl 
-    || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+  const getInitialImage = (prod) => {
+    return prod?.primaryImageUrl
+      || prod?.images?.find(i => i?.primaryImage)?.imageUrl
+      || prod?.images?.[0]?.imageUrl
+      || FALLBACK_IMAGE;
+  };
 
   const imgRef = useRef(null);
-  const [imgSrc, setImgSrc] = useState(primaryImage);
+  const [imgSrc, setImgSrc] = useState(() => getInitialImage(product));
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [hasFailed, setHasFailed] = useState(false);
 
+  // Sync state when product object changes
   useEffect(() => {
-    setImgSrc(primaryImage);
+    const url = getInitialImage(product);
+    setImgSrc(url);
     setImgLoaded(false);
-  }, [primaryImage]);
+    setHasFailed(false);
+  }, [product]);
 
+  // Check if image is already complete (e.g. cached by browser)
   useEffect(() => {
-    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth !== 0) {
+    const img = imgRef.current;
+    if (img) {
+      if (img.complete) {
+        if (img.naturalWidth !== 0) {
+          setImgLoaded(true);
+        } else if (!hasFailed) {
+          setHasFailed(true);
+          setImgSrc(FALLBACK_IMAGE);
+          setImgLoaded(true);
+        }
+      }
+    }
+  }, [imgSrc, hasFailed]);
+
+  const handleLoad = () => {
+    setImgLoaded(true);
+  };
+
+  const handleError = () => {
+    if (!hasFailed) {
+      setHasFailed(true);
+      setImgSrc(FALLBACK_IMAGE);
+      setImgLoaded(true);
+    } else {
       setImgLoaded(true);
     }
-  }, [imgSrc]);
+  };
 
   const { isAuthenticated, isWishlisted, toggleWishlist } = useCustomer();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -49,7 +81,7 @@ const ProductCard = ({ product, priority = false }) => {
       <div className="relative aspect-square overflow-hidden bg-obsidian-950">
         {/* Skeleton Placeholder while image loads */}
         {!imgLoaded && (
-          <div className="absolute inset-0 bg-obsidian-800 animate-pulse flex items-center justify-center">
+          <div className="absolute inset-0 bg-obsidian-800 animate-pulse flex items-center justify-center z-0">
             <span className="text-[9px] sm:text-[10px] font-mono text-gold-500/50 uppercase tracking-widest">KK JEWELLERS</span>
           </div>
         )}
@@ -57,20 +89,17 @@ const ProductCard = ({ product, priority = false }) => {
         <img
           ref={imgRef}
           src={imgSrc}
-          onLoad={() => setImgLoaded(true)}
-          onError={() => {
-            setImgSrc('https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80');
-            setImgLoaded(true);
-          }}
-          alt={product.name}
-          className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ease-out filter brightness-95 group-hover:brightness-100 ${
+          onLoad={handleLoad}
+          onError={handleError}
+          alt={product.name || 'KK Jewellers Product'}
+          className={`w-full h-full object-cover object-center group-hover:scale-105 transition-opacity duration-500 ease-out filter brightness-95 group-hover:brightness-100 relative z-10 ${
             imgLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           loading={priority ? 'eager' : 'lazy'}
         />
         
         {/* Dark Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/90 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/90 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity pointer-events-none z-10"></div>
 
         {/* Badges */}
         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1 z-10">

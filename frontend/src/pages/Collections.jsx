@@ -69,7 +69,7 @@ const Collections = () => {
         gender,
         occasion
       });
-      setProducts(data || []);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching filtered products:', err);
       setProductsError('Unable to load jewellery catalogue. Please check your connection or retry.');
