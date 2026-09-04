@@ -2,12 +2,14 @@ package com.kkjewellers.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 public class ProductImage {
     @Id
     private String id;
 
     @JsonIgnore
+    @Transient
     private Product product;
 
     private String imageUrl;

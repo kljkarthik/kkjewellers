@@ -70,7 +70,7 @@ public class SeedDataService implements CommandLineRunner {
                 seedEnquiriesAndAppointments();
             }
             logger.info("MongoDB & Cloudinary Migration and Seeding Complete!");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             logger.error("MongoDB seed data initialization or Cloudinary verification failed during startup: {}", e.getMessage(), e);
         }
     }
