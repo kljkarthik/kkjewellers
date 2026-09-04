@@ -54,9 +54,12 @@ const Collections = () => {
     fetchMetadata();
   }, []);
 
+  const [productsError, setProductsError] = useState(null);
+
   // Fetch products whenever filters change
   const fetchFilteredProducts = async () => {
     setLoading(true);
+    setProductsError(null);
     try {
       const data = await getProducts({
         query: query.trim(),
@@ -69,6 +72,7 @@ const Collections = () => {
       setProducts(data || []);
     } catch (err) {
       console.error('Error fetching filtered products:', err);
+      setProductsError('Unable to load jewellery catalogue. Please check your connection or retry.');
     } finally {
       setLoading(false);
     }
@@ -292,6 +296,17 @@ const Collections = () => {
                 {[1, 2, 3, 4, 5, 6].map((n) => (
                   <div key={n} className="h-64 sm:h-80 bg-obsidian-950 border border-obsidian-600"></div>
                 ))}
+              </div>
+            ) : productsError ? (
+              <div className="bg-obsidian-950 p-8 sm:p-12 border border-gold-500/30 text-center space-y-4">
+                <p className="font-serif text-xl sm:text-2xl text-gold-400 font-bold uppercase">Catalogue Unavailable</p>
+                <p className="text-xs text-pearl-300">{productsError}</p>
+                <button
+                  onClick={fetchFilteredProducts}
+                  className="px-6 py-3 bg-gold-500 text-obsidian-950 text-xs font-bold uppercase tracking-widest shadow-obsidian-glow min-h-[44px]"
+                >
+                  Retry Loading Catalogue
+                </button>
               </div>
             ) : products.length === 0 ? (
               <div className="bg-obsidian-950 p-8 sm:p-12 border border-gold-500/30 text-center space-y-4">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
@@ -9,6 +9,7 @@ const ProductCard = ({ product, priority = false }) => {
     || product.images?.[0]?.imageUrl 
     || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
 
+  const imgRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(primaryImage);
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -16,6 +17,12 @@ const ProductCard = ({ product, priority = false }) => {
     setImgSrc(primaryImage);
     setImgLoaded(false);
   }, [primaryImage]);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth !== 0) {
+      setImgLoaded(true);
+    }
+  }, [imgSrc]);
 
   const { isAuthenticated, isWishlisted, toggleWishlist } = useCustomer();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -48,6 +55,7 @@ const ProductCard = ({ product, priority = false }) => {
         )}
 
         <img
+          ref={imgRef}
           src={imgSrc}
           onLoad={() => setImgLoaded(true)}
           onError={() => {
