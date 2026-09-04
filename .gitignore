@@ -5,3 +5,5 @@ backend/target/
 .env.local
 .env.*.local
 *.log
+scratch/
+
