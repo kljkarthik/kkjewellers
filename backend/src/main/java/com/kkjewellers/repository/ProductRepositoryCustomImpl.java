@@ -1,21 +1,41 @@
 package com.kkjewellers.repository;
 
+import com.kkjewellers.entity.Category;
+import com.kkjewellers.entity.CollectionEntity;
 import com.kkjewellers.entity.Product;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
+    private final CategoryRepository categoryRepository;
+    private final CollectionRepository collectionRepository;
 
-    public ProductRepositoryCustomImpl(MongoTemplate mongoTemplate) {
+    public ProductRepositoryCustomImpl(
+            MongoTemplate mongoTemplate,
+            CategoryRepository categoryRepository,
+            CollectionRepository collectionRepository
+    ) {
         this.mongoTemplate = mongoTemplate;
+        this.categoryRepository = categoryRepository;
+        this.collectionRepository = collectionRepository;
+    }
+
+    private Object toMongoId(String idStr) {
+        if (idStr != null && ObjectId.isValid(idStr)) {
+            return new ObjectId(idStr);
+        }
+        return idStr;
     }
 
     @Override
@@ -41,11 +61,29 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         }
 
         if (categorySlug != null && !categorySlug.trim().isEmpty()) {
-            q.addCriteria(Criteria.where("category.slug").is(categorySlug.trim()));
+            String val = categorySlug.trim();
+            Optional<Category> cat = categoryRepository.findBySlug(val);
+            if (!cat.isPresent()) {
+                cat = categoryRepository.findById(val);
+            }
+            if (cat.isPresent()) {
+                q.addCriteria(Criteria.where("category.$id").is(toMongoId(cat.get().getId())));
+            } else {
+                return Collections.emptyList();
+            }
         }
 
         if (collectionSlug != null && !collectionSlug.trim().isEmpty()) {
-            q.addCriteria(Criteria.where("collection.slug").is(collectionSlug.trim()));
+            String val = collectionSlug.trim();
+            Optional<CollectionEntity> col = collectionRepository.findBySlug(val);
+            if (!col.isPresent()) {
+                col = collectionRepository.findById(val);
+            }
+            if (col.isPresent()) {
+                q.addCriteria(Criteria.where("collection.$id").is(toMongoId(col.get().getId())));
+            } else {
+                return Collections.emptyList();
+            }
         }
 
         if (material != null && !material.trim().isEmpty()) {
