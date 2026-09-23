@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import LightboxModal from '../components/LightboxModal';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { getGallery } from '../services/settingsService';
+import { IMAGES } from '../config/images';
 
 const Gallery = () => {
   const [items, setItems] = useState([]);
@@ -91,7 +92,7 @@ const Gallery = () => {
                   src={item.imageUrl}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80';
+                    e.target.src = IMAGES.fallback.product;
                   }}
                   alt={item.title}
                   loading={index < 6 ? 'eager' : 'lazy'}

@@ -10,6 +10,7 @@ import LightboxModal from '../components/LightboxModal';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { getProductByCode, getProducts } from '../services/productService';
 import { useSettings } from '../context/SettingsContext';
+import { IMAGES } from '../config/images';
 
 const ProductDetail = () => {
   const { productCode } = useParams();
@@ -94,7 +95,7 @@ const ProductDetail = () => {
   }
 
   const images = product.images || [];
-  const currentImage = images[selectedImageIndex]?.imageUrl || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+  const currentImage = images[selectedImageIndex]?.imageUrl || IMAGES.fallback.product;
 
   const whatsappNumber = settings?.whatsappNumber || '919440156446';
   const whatsappMessage = `Hello KK JEWELLERS, I am interested in ${product.name} (${product.productCode}). I would like to know more about this piece.`;

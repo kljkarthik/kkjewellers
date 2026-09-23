@@ -15,6 +15,7 @@ import ScrambleText from '../components/typography/ScrambleText';
 import { getFeaturedProducts, getNewArrivals } from '../services/productService';
 import { getGallery } from '../services/settingsService';
 import { useSettings } from '../context/SettingsContext';
+import { IMAGES } from '../config/images';
 
 const Home = () => {
   const { settings } = useSettings();
@@ -49,31 +50,31 @@ const Home = () => {
       title: "Royal Gold",
       slug: "gold-jewellery",
       desc: "Handcrafted 22K antique gold chokers, temple harams, and nakshi kadas.",
-      image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80"
+      image: IMAGES.collections.royalGold
     },
     {
       title: "Bridal Heritage",
       slug: "bridal-collection",
       desc: "Traditional bridal suites, uncut Polki neckpieces, and emerald drop matha pattis.",
-      image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80"
+      image: IMAGES.collections.bridal
     },
     {
       title: "Diamond Elegance",
       slug: "diamond-jewellery",
       desc: "GIA certified solitaire rings, diamond drop earrings, and modern tennis bracelets.",
-      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80"
+      image: IMAGES.collections.diamond
     },
     {
       title: "Contemporary",
       slug: "contemporary-collection",
       desc: "Sleek lightweight gold ornaments crafted for modern celebrations.",
-      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80"
+      image: IMAGES.collections.contemporary
     },
     {
       title: "Men's Collection",
       slug: "mens-collection",
       desc: "Royal gold signet rings, heavy kada bangles, and gemstone cufflinks.",
-      image: "https://images.unsplash.com/photo-1622434641406-a158123450f9?w=800&q=80"
+      image: IMAGES.collections.mens
     }
   ];
 
@@ -178,7 +179,7 @@ const Home = () => {
       <section className="relative py-20 sm:py-36 bg-obsidian-950 text-pearl-100 overflow-hidden border-b border-gold-500/30">
         <div className="absolute inset-0 opacity-40">
           <img
-            src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1920&q=80"
+            src={IMAGES.hero.main}
             alt="The Bridal Edit"
             className="w-full h-full object-cover filter contrast-125"
           />
@@ -220,7 +221,7 @@ const Home = () => {
           
           <div className="relative h-[320px] sm:h-[450px] lg:h-auto overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1200&q=80"
+              src={IMAGES.hero.heritage}
               alt="Craftsmanship Artistry"
               className="w-full h-full object-cover filter brightness-90 hover:scale-105 transition-transform duration-1000"
             />

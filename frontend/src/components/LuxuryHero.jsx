@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
+import { IMAGES } from '../config/images';
 
 const LuxuryHero = () => {
   return (
@@ -10,7 +11,7 @@ const LuxuryHero = () => {
       {/* Photographic Background with Ken Burns Animation & Deep Vignette Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1920&q=80"
+          src={IMAGES.hero.main}
           alt="KK JEWELLERS Campaign"
           className="w-full h-full object-cover object-center filter brightness-[0.65] contrast-110 animate-ken-burns"
         />

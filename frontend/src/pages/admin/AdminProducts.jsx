@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, Search, X, RefreshCw, Sparkles } from 'lucide-react';
 import API from '../../services/api';
 import ImageUploader from '../../components/ImageUploader';
+import { IMAGES } from '../../config/images';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -73,7 +74,7 @@ const AdminProducts = () => {
       featured: false,
       newArrival: true,
       active: true,
-      imageUrlsText: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80'
+      imageUrlsText: IMAGES.fallback.product
     });
     setFormError('');
     setModalOpen(true);
@@ -97,7 +98,7 @@ const AdminProducts = () => {
       featured: p.featured || false,
       newArrival: p.newArrival || false,
       active: p.active !== false,
-      imageUrlsText: urls || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1000&q=80'
+      imageUrlsText: urls || IMAGES.fallback.product
     });
     setFormError('');
     setModalOpen(true);
@@ -226,7 +227,7 @@ const AdminProducts = () => {
                   <tr key={p.id} className="hover:bg-obsidian-950/60 transition-colors">
                     <td className="py-3.5 px-4 flex items-center gap-3">
                       <img
-                        src={p.images?.[0]?.imageUrl || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=300&q=80'}
+                        src={p.images?.[0]?.imageUrl || IMAGES.fallback.product}
                         alt=""
                         className="w-10 h-10 object-cover border border-gold-500/40"
                       />

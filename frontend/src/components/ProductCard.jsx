@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { useCustomer } from '../context/CustomerContext';
+import { IMAGES } from '../config/images';
 
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80';
+const FALLBACK_IMAGE = IMAGES.fallback.product;
 
 const ProductCard = ({ product, priority = false }) => {
   const getInitialImage = (prod) => {

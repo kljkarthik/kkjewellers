@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import ScrollRevealText from '../components/typography/ScrollRevealText';
+import { IMAGES } from '../config/images';
 
 const AboutUs = () => {
   return (
@@ -127,7 +128,7 @@ const AboutUs = () => {
 
           <div className="relative aspect-[4/3] overflow-hidden border border-gold-500/40 shadow-2xl bg-obsidian-950">
             <img
-              src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1000&q=80"
+              src={IMAGES.story.heritage}
               alt="KK JEWELLERS Heritage & Showroom"
               className="w-full h-full object-cover filter brightness-90 hover:scale-105 transition-transform duration-700"
             />

@@ -4,6 +4,7 @@ import { Mail, ShieldAlert, Key, Lock } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useCustomer } from '../context/CustomerContext';
+import { IMAGES } from '../config/images';
 
 const Login = () => {
   const [identifier, setIdentifier] = useState('');
@@ -39,7 +40,7 @@ const Login = () => {
         {/* Background Overlay */}
         <div className="absolute inset-0 opacity-15 pointer-events-none">
           <img
-            src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1920&q=80"
+            src={IMAGES.backgrounds.login}
             alt=""
             className="w-full h-full object-cover filter brightness-50"
           />

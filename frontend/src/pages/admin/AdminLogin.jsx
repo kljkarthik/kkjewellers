@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Lock, User, Key, ShieldAlert, ArrowLeft, RefreshCw, CheckCircle2, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import API from '../../services/api';
+import { IMAGES } from '../../config/images';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -98,7 +99,7 @@ const AdminLogin = () => {
       {/* Background Decor */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <img
-          src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1920&q=80"
+          src={IMAGES.backgrounds.adminLogin}
           alt=""
           className="w-full h-full object-cover filter brightness-50"
         />

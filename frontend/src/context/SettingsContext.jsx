@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getWebsiteSettings } from '../services/settingsService';
+import { IMAGES } from '../config/images';
 
 const SettingsContext = createContext();
 
 const defaultSettings = {
   businessName: 'KK JEWELLERS',
   tagline: 'EST. 2017 • Royal Fine Jewellery',
-  logoUrl: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&q=80',
+  logoUrl: IMAGES.fallback.logo,
   phone: '+91 9440156446',
   whatsappNumber: '919440156446',
   email: 'enquiry@kkjewellers.com',

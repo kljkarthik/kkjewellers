@@ -4,6 +4,7 @@ import { User, Mail, Phone, Lock, Calendar, Sparkles, ShieldAlert, CheckCircle2,
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useCustomer } from '../context/CustomerContext';
+import { IMAGES } from '../config/images';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -58,7 +59,7 @@ const Register = () => {
         {/* Background Overlay */}
         <div className="absolute inset-0 opacity-15 pointer-events-none">
           <img
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1920&q=80"
+            src={IMAGES.backgrounds.register}
             alt=""
             className="w-full h-full object-cover filter brightness-50"
           />
